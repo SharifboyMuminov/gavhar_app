@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "457930231839",
+    "project_id": "gavhar-tilla",
+    "storage_bucket": "gavhar-tilla.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457930231839:android:14556313c8403295cd852a",
+        "android_client_info": {
+          "package_name": "com.uz.gavhar_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc1BHEkRIZKePWdDr_G7QlmwJAvrdN-vM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
