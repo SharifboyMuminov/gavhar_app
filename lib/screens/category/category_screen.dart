@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Category_Screen extends StatefulWidget {
-  const Category_Screen({super.key});
+class CategoryScreen extends StatefulWidget {
+  const CategoryScreen({super.key});
 
   @override
-  State<Category_Screen> createState() => _Category_ScreenState();
+  State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _Category_ScreenState extends State<Category_Screen> {
+class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("CategoryScreen"),
+      ),
+    );
   }
 }
