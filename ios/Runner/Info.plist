@@ -45,5 +45,14 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+
+
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+    <false/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Post and share photos</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Post and share photos</string>
 </dict>
 </plist>
