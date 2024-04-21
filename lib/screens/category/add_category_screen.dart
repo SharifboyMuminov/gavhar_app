@@ -12,6 +12,7 @@ class AddCategoryScreen extends StatefulWidget {
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
 }
 
+
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
   Uint8List? _image;
   File? imageFile;
