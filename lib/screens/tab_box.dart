@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
+import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/category/category_screen.dart';
-import 'package:gavhar_app/screens/produc_screen/produc_screen.dart';
+import 'package:gavhar_app/screens/produc/produc_screen.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:gavhar_app/view_models/tab_view.dart';
 import 'package:provider/provider.dart';
-
 
 import 'request/request_screen.dart';
 
@@ -51,7 +50,10 @@ class _TabScreenState extends State<TabScreen>
     return Scaffold(
       body: Stack(
         children: [
-          _screens[provideListen.activeScreen],
+          IndexedStack(
+            index: provideListen.activeScreen,
+            children: _screens,
+          ),
           Positioned(
             bottom: animation.value,
             left: 0,
@@ -124,8 +126,8 @@ class _TabScreenState extends State<TabScreen>
 
   Widget _getButton(
       {required VoidCallback onTab,
-        required IconData icon,
-        required bool active}) {
+      required IconData icon,
+      required bool active}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

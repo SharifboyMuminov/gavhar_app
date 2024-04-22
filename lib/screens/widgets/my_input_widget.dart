@@ -21,8 +21,10 @@ class TextInputMyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.he),
+      margin: EdgeInsets.symmetric(vertical: 15.he),
       child: TextFormField(
+        maxLines: null,
+        cursorColor: Colors.amber,
         controller: textEditingController,
         keyboardType: textInputType,
         textInputAction: textInputAction,
@@ -35,7 +37,7 @@ class TextInputMyWidget extends StatelessWidget {
           contentPadding:
               EdgeInsets.symmetric(horizontal: 10.we, vertical: 15.he),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 2.we),
+            borderSide: BorderSide(color: Colors.amber, width: 2.we),
             borderRadius: BorderRadius.circular(10.r),
           ),
           enabledBorder: OutlineInputBorder(

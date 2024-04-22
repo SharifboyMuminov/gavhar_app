@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/widgets/my_navigator.dart';
 import 'package:gavhar_app/utils/size_app.dart';
@@ -20,7 +21,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              myNavigator(context, screen: AddCategoryScreen());
+              globalAnimationController.reverse();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const AddCategoryScreen();
+                  },
+                ),
+              ).then((value) {
+                globalAnimationController.forward();
+              });
             },
             icon: Icon(
               Icons.add,

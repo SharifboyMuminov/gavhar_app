@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -10,16 +11,30 @@ import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddCategoryScreen extends StatefulWidget {
-  const AddCategoryScreen({super.key});
+class AddProductScreen extends StatefulWidget {
+  const AddProductScreen({super.key});
 
   @override
-  State<AddCategoryScreen> createState() => _AddCategoryScreenState();
+  State<AddProductScreen> createState() => _AddProductScreenState();
 }
 
-class _AddCategoryScreenState extends State<AddCategoryScreen> {
-
-
+class _AddProductScreenState extends State<AddProductScreen> {
+  List<CategoryModel> categories = [
+    CategoryModel(
+        storagePath: "",
+        countProduct: 0,
+        categoryName: "Sharifjo",
+        docId: "",
+        imageUrl: ""),
+    CategoryModel(
+        storagePath: "",
+        countProduct: 0,
+        categoryName: "Qonday",
+        docId: "",
+        imageUrl: ""),
+  ];
+  String textGender = "Universal";
+  List<String> listGender = ["Men", "Women", "Universal"];
   File? imageFile;
   XFile? xFile;
   TextEditingController textEditingController = TextEditingController();
@@ -31,7 +46,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
       appBar: AppBar(
         centerTitle: Platforma.android,
         title: Text(
-          "Add Category",
+          "Add Product",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w500,
@@ -61,10 +76,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.we),
+        padding: EdgeInsets.only(left: 20.we, right: 20.we, bottom: 30.he),
         child: Column(
           children: [
             SizedBox(width: width, height: 40.he),
+            if (imageFile != null) Image.file(imageFile!),
             Container(
               width: width - 100,
               height: width - 100,
@@ -96,7 +112,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                     context,
                     onChaneXFile: (ChangeImage changeImage) {
                       xFile = changeImage.xFile;
-
+                      imageFile = File(changeImage.xFile!.path);
                       setState(() {});
                     },
                   );
@@ -127,12 +143,86 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       ),
               ),
             ),
-            SizedBox(height: 20.he),
+            SizedBox(height: 15.he),
             TextInputMyWidget(
-              textInputAction: TextInputAction.done,
-              label: 'Enter category name',
+              label: 'Enter product name',
               textEditingController: textEditingController,
               isError: false,
+            ),
+            TextInputMyWidget(
+              textInputType: TextInputType.number,
+              label: 'Enter price',
+              textEditingController: textEditingController,
+              isError: false,
+            ),
+            TextInputMyWidget(
+              textInputType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              label: 'Enter description',
+              textEditingController: textEditingController,
+              isError: false,
+            ),
+            SizedBox(height: 20.he),
+            DropdownMenu<CategoryModel>(
+              selectedTrailingIcon: Icon(
+                Icons.category,
+                size: 18.sp,
+                color: Colors.black,
+              ),
+              label: Text(
+                "Category",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              width: width - 50,
+              // initialSelection: /,
+              onSelected: (CategoryModel? value) {
+                // This is called when the user selects an item.
+                setState(
+                  () {},
+                );
+              },
+
+              dropdownMenuEntries: categories.map(
+                (CategoryModel value) {
+                  return DropdownMenuEntry<CategoryModel>(
+                      value: value, label: value.categoryName);
+                },
+              ).toList(),
+            ),
+            SizedBox(height: 20.he),
+            DropdownMenu<String>(
+              selectedTrailingIcon: Icon(
+                Icons.check,
+                size: 18.sp,
+                color: Colors.black,
+              ),
+              label: Text(
+                "Gender",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              width: width - 50,
+              initialSelection: textGender,
+              onSelected: (String? value) {
+                // This is called when the user selects an item.
+                setState(
+                  () {
+                    textGender = value!;
+                  },
+                );
+              },
+              dropdownMenuEntries: listGender.map<DropdownMenuEntry<String>>(
+                (String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                },
+              ).toList(),
             ),
           ],
         ),
