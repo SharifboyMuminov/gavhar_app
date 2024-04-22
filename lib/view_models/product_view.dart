@@ -5,6 +5,9 @@ import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 
 class ProductViewModel extends ChangeNotifier {
   List<ProductModel> products = [];
+  ProductViewModel(){
+    // callProducts();
+  }
 
   bool _loading = false;
 
@@ -16,8 +19,9 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   Future<void> callProducts() async {
-    debugPrint("asdfadsf");
     _notifyListeners(true);
+    debugPrint("asdfadsf");
+
 
     try {
       await FirebaseFirestore.instance
@@ -34,10 +38,11 @@ class ProductViewModel extends ChangeNotifier {
     } catch (_) {
       debugPrint("catch (_)");
     }
+    _notifyListeners(false);
   }
 
   Future<void> insertProduct({required ProductModel productModel}) async {
-    debugPrint("asdfadsf");
+    // debugPrint("asdfadsf");
     _notifyListeners(true);
 
     try {
@@ -48,6 +53,23 @@ class ProductViewModel extends ChangeNotifier {
           .collection(AppConst.productTableName)
           .doc(cf.id)
           .update({"doc_id": cf.id});
+      callProducts();
+    } on FirebaseException catch (_) {
+      debugPrint("Error insertProduct on FirebaseException catch (_)");
+    } catch (_) {
+      debugPrint("Error insertProduct catch (_)");
+    }
+  }
+
+  Future<void> deleteProduct({required ProductModel productModel}) async {
+    _notifyListeners(true);
+
+    try {
+      await FirebaseFirestore.instance
+          .collection(AppConst.productTableName)
+          .doc(productModel.docId)
+          .delete();
+
       callProducts();
     } on FirebaseException catch (_) {
       debugPrint("Error insertProduct on FirebaseException catch (_)");

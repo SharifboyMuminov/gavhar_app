@@ -7,6 +7,8 @@ import 'package:gavhar_app/screens/produc/info_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/product_item.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/size_app.dart';
+import 'package:gavhar_app/view_models/product_view.dart';
+import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -35,6 +37,7 @@ class _ProductScreenState extends State<ProductScreen> {
     //
     //   }
     // });
+
 
     super.initState();
   }

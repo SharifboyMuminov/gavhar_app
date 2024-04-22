@@ -80,7 +80,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
         child: Column(
           children: [
             SizedBox(width: width, height: 40.he),
-            if (imageFile != null) Image.file(imageFile!),
             Container(
               width: width - 100,
               height: width - 100,
