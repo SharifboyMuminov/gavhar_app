@@ -18,8 +18,6 @@ class AddCategoryScreen extends StatefulWidget {
 }
 
 class _AddCategoryScreenState extends State<AddCategoryScreen> {
-
-
   File? imageFile;
   XFile? xFile;
   TextEditingController textEditingController = TextEditingController();
@@ -71,8 +69,9 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
                 image: DecorationImage(
-                  image: AssetImage(
-                      xFile == null ? AppConst.inputImage : xFile!.path),
+                  image: xFile == null
+                      ? const AssetImage(AppConst.inputImage)
+                      : FileImage(imageFile!) as ImageProvider<Object>,
                   fit: BoxFit.cover,
                 ),
                 boxShadow: [
@@ -95,8 +94,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                   showImageDialog(
                     context,
                     onChaneXFile: (ChangeImage changeImage) {
-                      xFile = changeImage.xFile;
-
+                      if (changeImage.xFile != null) {
+                        xFile = changeImage.xFile;
+                        imageFile = File(xFile!.path);
+                      }
                       setState(() {});
                     },
                   );

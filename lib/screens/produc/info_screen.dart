@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen(
@@ -169,6 +171,34 @@ class _InfoScreenState extends State<InfoScreen> {
                           color: Colors.grey,
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
+                        ),
+                      ),
+                      SizedBox(height: 30.he),
+                      TextButton(
+                        onPressed: () async {
+                          // https://web.telegram.org/a/#-1001391791788
+
+                          var url = Uri.parse("https://t.me/chust_aurum");
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(url);
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/telegram.svg",
+                              width: 60.we,
+                            ),
+                            SizedBox(width: 30.we),
+                            Text(
+                              "Telegram link",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 22.sp,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

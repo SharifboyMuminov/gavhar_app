@@ -7,8 +7,6 @@ import 'package:gavhar_app/screens/produc/info_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/product_item.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/size_app.dart';
-import 'package:gavhar_app/view_models/product_view.dart';
-import 'package:provider/provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -21,32 +19,17 @@ class _ProductScreenState extends State<ProductScreen> {
   final ScrollController scrollController = ScrollController();
 
   @override
-  void initState() {
-    // double b = 0.0;
-    // scrollController.addListener(() {
-    //   // debugPrint(scrollController.position.pixels.toString());
-    //   double a = scrollController.position.pixels;
-    //   if(a > -1){
-    //     if (a > b) {
-    //       globalAnimationController.reverse();
-    //     } else if (a < b) {
-    //       globalAnimationController.forward();
-    //     }
-    //     b = a;
-    //     debugPrint(a.toString());
-    //
-    //   }
-    // });
-
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product_Screen"),
+        title: Text(
+          "Product Screen",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 24.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -73,7 +56,6 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       body: StaggerGridMyWidget(
-        scrollController: scrollController,
         child: List.generate(
           20,
           (index) {
@@ -113,6 +95,6 @@ final ProductModel globalProduct = ProductModel(
   nameProduct: "Zirak",
   categoryId: "",
   docId: "",
-  imageUrl: "assets/images/asd.png",
+  imageUrl: "assets/images/rings.png",
   price: 50000000000,
 );

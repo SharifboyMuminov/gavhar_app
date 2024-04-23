@@ -3,17 +3,15 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class StaggerGridMyWidget extends StatelessWidget {
-  const StaggerGridMyWidget(
-      {super.key, required this.child, required this.scrollController});
+  const StaggerGridMyWidget({super.key, required this.child});
 
   final List<Widget> child;
-  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
-      controller: scrollController,
-      padding: EdgeInsets.symmetric(horizontal: 20.we, vertical: 20.he),
+      padding: EdgeInsets.only(
+          left: 20.we, right: 20.we, bottom: 100.he, top: 20.he),
       children: [
         //   StaggeredGridView.countBuilder(
         //   crossAxisCount: 4,
