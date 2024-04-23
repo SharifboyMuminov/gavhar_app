@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
+import 'package:gavhar_app/screens/produc/widget/product_item.dart';
 import 'package:gavhar_app/screens/widgets/backgeound_conteyner.dart';
 import 'package:gavhar_app/screens/widgets/background_item.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
@@ -72,7 +74,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 GridView.builder(
                   padding: EdgeInsets.only(
                       top: 20.he, left: 18.we, right: 18.we, bottom: 100.he),
-                  itemCount: 20,
+                  itemCount: state.products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 20.he,
@@ -81,42 +83,26 @@ class _ProductScreenState extends State<ProductScreen> {
                       // mainAxisExtent: 1
                       ),
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        color: AppColors.c_FFFFFF,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 30,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 17),
+                    return ProductItem(
+                      productModel: state.products[index],
+                      onTab: () {
+                        globalAnimationController.reverse();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return InfoScreen(
+                                  productModel: state.products[index]);
+                            },
                           ),
-                        ],
-                        image: DecorationImage(
-                          image: AssetImage(globalProduct.imageUrl),
-                        ),
-                      ),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        )),
-                        onPressed: () {
-                          globalAnimationController.reverse();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return InfoScreen(productModel: globalProduct);
-                              },
-                            ),
-                          ).then((value) {
-                            globalAnimationController.forward();
-                          });
-                        },
-                        child: const SizedBox(),
-                      ),
+                        ).then((value) {
+                          globalAnimationController.forward();
+                        });
+                      },
+                      onLongPress: () {
+                        context.read<ProductBloc>().add(
+                            ProductDeleteEvent(productModel: state.products[index]));
+                      },
                     );
                   },
                 ),
@@ -131,13 +117,13 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 }
 
-final ProductModel globalProduct = ProductModel(
-  storagePath: "",
-  description: "asdgfa sasdg asdga sdfa sdga sfgabds asfgbtrbadf sfgb",
-  gender: "Women",
-  nameProduct: "Zirak",
-  categoryId: "",
-  docId: "",
-  imageUrl: "assets/images/rings.png",
-  price: 50000000000,
-);
+// final ProductModel globalProduct = ProductModel(
+//   storagePath: "",
+//   description: "asdgfa sasdg asdga sdfa sdga sfgabds asfgbtrbadf sfgb",
+//   gender: "Women",
+//   nameProduct: "Zirak",
+//   categoryId: "",
+//   docId: "",
+//   imageUrl: "assets/images/rings.png",
+//   price: 50000000000,
+// );
