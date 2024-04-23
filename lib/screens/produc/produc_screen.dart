@@ -1,16 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
-import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
-import 'package:gavhar_app/screens/produc/widget/product_item.dart';
-import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
+import 'package:gavhar_app/screens/widgets/backgeound_conteyner.dart';
+import 'package:gavhar_app/screens/widgets/background_item.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
@@ -39,18 +37,18 @@ class _ProductScreenState extends State<ProductScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              // globalAnimationController.reverse();
-              //
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) {
-              //       return const AddProductScreen();
-              //     },
-              //   ),
-              // ).then((value) {
-              //   globalAnimationController.forward();
-              // });
+              globalAnimationController.reverse();
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const AddProductScreen();
+                  },
+                ),
+              ).then((value) {
+                globalAnimationController.forward();
+              });
             },
             icon: Icon(
               Icons.add,
@@ -70,20 +68,10 @@ class _ProductScreenState extends State<ProductScreen> {
           if (state is SuccessProductState) {
             return Stack(
               children: [
-                Positioned(
-                  left: -100,
-                  child: Container(
-                    width: 300.we,
-                    height: 300.we,
-                    decoration: const BoxDecoration(
-                      color: Colors.yellow,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
+                const BackGroundItem(),
                 GridView.builder(
                   padding: EdgeInsets.only(
-                      top: 20.he, left: 18.we, right: 18.we, bottom: 40.he),
+                      top: 20.he, left: 18.we, right: 18.we, bottom: 100.he),
                   itemCount: 20,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -108,6 +96,26 @@ class _ProductScreenState extends State<ProductScreen> {
                         image: DecorationImage(
                           image: AssetImage(globalProduct.imageUrl),
                         ),
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        )),
+                        onPressed: () {
+                          globalAnimationController.reverse();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return InfoScreen(productModel: globalProduct);
+                              },
+                            ),
+                          ).then((value) {
+                            globalAnimationController.forward();
+                          });
+                        },
+                        child: const SizedBox(),
                       ),
                     );
                   },

@@ -4,6 +4,7 @@ import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
+import 'package:gavhar_app/screens/widgets/background_item.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
@@ -52,49 +53,56 @@ class _CategoryScreenState extends State<CategoryScreen> {
           SizedBox(width: 10.we),
         ],
       ),
-      body: StaggerGridMyWidget(
-        child: List.generate(20, (index) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 10.he),
-            alignment: Alignment.bottomCenter,
-            height: index.isEven ? 200.he : 250.he,
-            decoration: BoxDecoration(
-              color: AppColors.c_FFFFFF,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.27),
-                  blurRadius: 30,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 17),
-                ),
-              ],
-              borderRadius: BorderRadius.circular(10.r),
-              image: DecorationImage(
-                image: NetworkImage(categoryModel.imageUrl),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Text(
-              categoryModel.categoryName,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: AppColors.c_FFFFFF,
-                fontWeight: FontWeight.w700,
-                fontSize: 20.sp,
-                shadows: [
-                  BoxShadow(
-                    color: Colors.amber.withOpacity(0.7),
-                    blurRadius: 10,
-                    spreadRadius: 10,
-                    offset: const Offset(0, 0),
+      body: Stack(
+        children: [
+          // const BackGroundItem(
+          //   colorOne: Colors.redAccent,
+          // ),
+          StaggerGridMyWidget(
+            child: List.generate(20, (index) {
+              return Container(
+                padding: EdgeInsets.symmetric(vertical: 10.he),
+                alignment: Alignment.bottomCenter,
+                height: index.isEven ? 200.he : 250.he,
+                decoration: BoxDecoration(
+                  color: AppColors.c_FFFFFF,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.27),
+                      blurRadius: 30,
+                      spreadRadius: 1,
+                      offset: const Offset(0, 17),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10.r),
+                  image: DecorationImage(
+                    image: NetworkImage(categoryModel.imageUrl),
+                    fit: BoxFit.cover,
                   ),
-                ],
-              ),
-            ),
-          );
-        }),
+                ),
+                child: Text(
+                  categoryModel.categoryName,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: AppColors.c_FFFFFF,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 20.sp,
+                    shadows: [
+                      BoxShadow(
+                        color: Colors.amber.withOpacity(0.7),
+                        blurRadius: 10,
+                        spreadRadius: 10,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
