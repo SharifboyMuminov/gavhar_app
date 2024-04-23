@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/server/firebase_options.dart';
 import 'package:gavhar_app/screens/splash/splash_screen.dart';
-import 'package:gavhar_app/view_models/product_view.dart';
-import 'package:provider/provider.dart';
-
-import 'view_models/tab_view.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,11 +13,9 @@ Future<void> main(List<String> args) async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TabViewModel()),
-        ChangeNotifierProvider(
-            create: (_) => ProductViewModel()..callProducts()),
+        BlocProvider(create: (_) => ProductBloc()..add(ProductCallEvent())),
       ],
       child: const MyApp(),
     ),

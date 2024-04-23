@@ -45,17 +45,17 @@ class ProductModel {
     };
   }
 
-  Map<String, dynamic> toJsonForUpdate() {
-    return {
-      'storage_path': storagePath,
-      "description": description,
-      'category_id': categoryId,
-      'gender': gender,
-      'name_product': nameProduct,
-      'image_url': imageUrl,
-      'price': price,
-    };
-  }
+  // Map<String, dynamic> toJsonForUpdate() {
+  //   return {
+  //     'storage_path': storagePath,
+  //     "description": description,
+  //     'category_id': categoryId,
+  //     'gender': gender,
+  //     'name_product': nameProduct,
+  //     'image_url': imageUrl,
+  //     'price': price,
+  //   };
+  // }
 
   static ProductModel getDefaultProduct() {
     return ProductModel(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:lottie/lottie.dart';
-import 'package:gavhar_app/screens/tab_box.dart';
+import 'package:gavhar_app/screens/tab_box/tab_box.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

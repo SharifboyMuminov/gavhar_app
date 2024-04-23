@@ -1,11 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
+import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/product_item.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
+import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -33,18 +39,18 @@ class _ProductScreenState extends State<ProductScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              globalAnimationController.reverse();
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const AddProductScreen();
-                  },
-                ),
-              ).then((value) {
-                globalAnimationController.forward();
-              });
+              // globalAnimationController.reverse();
+              //
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) {
+              //       return const AddProductScreen();
+              //     },
+              //   ),
+              // ).then((value) {
+              //   globalAnimationController.forward();
+              // });
             },
             icon: Icon(
               Icons.add,
@@ -55,34 +61,63 @@ class _ProductScreenState extends State<ProductScreen> {
           SizedBox(width: 10.we),
         ],
       ),
-      body: StaggerGridMyWidget(
-        child: List.generate(
-          20,
-          (index) {
-            return ProductItem(
-              onLongPress: () {},
-              index: index,
-              onTab: () {
-                // debugPrint("Makkami");
-                globalAnimationController.reverse();
+      body: BlocBuilder<ProductBloc, ProductState>(
+        builder: (BuildContext context, ProductState state) {
+          if (state is ErrorProductState) {
+            return Center(child: Text(state.errorText));
+          }
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return InfoScreen(productModel: globalProduct);
-                    },
+          if (state is SuccessProductState) {
+            return Stack(
+              children: [
+                Positioned(
+                  left: -100,
+                  child: Container(
+                    width: 300.we,
+                    height: 300.we,
+                    decoration: const BoxDecoration(
+                      color: Colors.yellow,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                ).then(
-                  (value) {
-                    globalAnimationController.forward();
+                ),
+                GridView.builder(
+                  padding: EdgeInsets.only(
+                      top: 20.he, left: 18.we, right: 18.we, bottom: 40.he),
+                  itemCount: 20,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 20.he,
+                      crossAxisSpacing: 15.we,
+                      childAspectRatio: 0.7
+                      // mainAxisExtent: 1
+                      ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        color: AppColors.c_FFFFFF,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            blurRadius: 30,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 17),
+                          ),
+                        ],
+                        image: DecorationImage(
+                          image: AssetImage(globalProduct.imageUrl),
+                        ),
+                      ),
+                    );
                   },
-                );
-              },
-              productModel: globalProduct,
+                ),
+              ],
             );
-          },
-        ),
+          }
+
+          return const Center(child: CircularProgressIndicator.adaptive());
+        },
       ),
     );
   }
