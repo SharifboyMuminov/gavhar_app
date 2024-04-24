@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: "99b5dec989287c1aca71bf27339e0022b4dc3679225f442fb75790ef44535bf8"
+      sha256: "1639d96851f9e9e215dd39c9baad56846488aef3df392cb3221f37f70beac686"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.30"
+    version: "1.3.31"
   archive:
     dependency: transitive
     description:
@@ -173,10 +173,10 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "6b1152a5af3b1cfe7e45309e96fc1aa14873f410f7aadb3878aa7812acfa7531"
+      sha256: "4aef2a23d0f3265545807d68fbc2f76a6b994ca3c778d88453b99325abd63284"
       url: "https://pub.dev"
     source: hosted
-    version: "2.30.0"
+    version: "2.30.1"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -189,34 +189,34 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: c8b02226e548f35aace298e2bb2e6c24e34e8a203d614e742bb1146e5a4ad3c8
+      sha256: "67f2fcc600fc78c2f731c370a3a5e6c87ee862e3a2fba6f951eca6d5dafe5c29"
       url: "https://pub.dev"
     source: hosted
-    version: "2.15.0"
+    version: "2.16.0"
   firebase_storage:
     dependency: "direct main"
     description:
       name: firebase_storage
-      sha256: a4397087ffceb2c7aff4159c15890eb24ae569c87d9f718b5680a531c00583cd
+      sha256: "67a01a9c81830f636d63744639bf82023ed0395d80ded7440f478dd6a7fbcef4"
       url: "https://pub.dev"
     source: hosted
-    version: "11.7.2"
+    version: "11.7.3"
   firebase_storage_platform_interface:
     dependency: transitive
     description:
       name: firebase_storage_platform_interface
-      sha256: d78d891be84ea101a99faec271bae52183a5d796b143381c7417eb14013e9cbb
+      sha256: "9e50fdcf38d275eafccb3c58a8b4d27f246c7cb55944d409a7af2321be90e97c"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.17"
+    version: "5.1.18"
   firebase_storage_web:
     dependency: transitive
     description:
       name: firebase_storage_web
-      sha256: "34fec7d6757df239de9e699c700edb70c02843ff07763ca4215c36877020d82e"
+      sha256: aa37c8bbffb1452f9e5f8c236a4b10c3e693487a30e8a1f0ff9e1d23493ac9bb
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.2"
+    version: "3.9.3"
   flutter:
     dependency: "direct main"
     description: flutter

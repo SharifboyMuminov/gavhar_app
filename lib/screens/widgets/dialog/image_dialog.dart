@@ -14,7 +14,11 @@ showImageDialog(BuildContext context,
   ChangeImage changeImage = ChangeImage();
 
   Future<void> _pickerImageFromGallery() async {
-    xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    xFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
     if (xFile != null) {
       changeImage.xFile = xFile;
       changeImage.uint8list = File(xFile!.path).readAsBytesSync();
@@ -23,7 +27,11 @@ showImageDialog(BuildContext context,
   }
 
   Future<void> _pickerImageFromCamera() async {
-    xFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    xFile = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
     if (xFile != null) {
       changeImage.xFile = xFile;
       changeImage.uint8list = File(xFile!.path).readAsBytesSync();

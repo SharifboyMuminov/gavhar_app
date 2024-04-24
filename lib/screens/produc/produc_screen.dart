@@ -70,7 +70,7 @@ class _ProductScreenState extends State<ProductScreen> {
           if (state is SuccessProductState) {
             return Stack(
               children: [
-                const BackGroundItem(),
+                // const BackGroundItem(),
                 GridView.builder(
                   padding: EdgeInsets.only(
                       top: 20.he, left: 18.we, right: 18.we, bottom: 100.he),

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -49,7 +51,15 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              if (xFile != null) {
+                String urlImage =
+                    await context.read<ImageCubit>().addImageInFireBase(
+                          file: imageFile!,
+                          fileName: "files/${xFile!.name}",
+                        );
+              }
+            },
             icon: Icon(
               Icons.check,
               size: 28.sp,
