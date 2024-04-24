@@ -40,6 +40,16 @@ class CategoryModel {
     };
   }
 
+  static CategoryModel defaultModel() {
+    return CategoryModel(
+      storagePath: "",
+      countProduct: 0,
+      categoryName: "",
+      docId: "",
+      imageUrl: "",
+    );
+  }
+
   CategoryModel copyWith({
     String? categoryName,
     String? docId,

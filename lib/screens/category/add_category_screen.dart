@@ -83,27 +83,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
               ),
             ),
           IconButton(
-            onPressed: () async {
-              if (xFile != null) {
-                String urlImage =
-                    await context.read<ImageCubit>().addImageInFireBase(
-                          file: imageFile!,
-                          fileName: "files/${xFile!.name}",
-                        );
-                CategoryModel categoryModel = CategoryModel(
-                  storagePath: "files/${xFile!.name}",
-                  countProduct: 0,
-                  categoryName: textEditingController.text,
-                  docId: "",
-                  imageUrl: urlImage,
-                );
-                if (!context.mounted) return;
-                context
-                    .read<CategoryBloc>()
-                    .add(CategoryInsertEvent(categoryModel: categoryModel));
-                Navigator.pop(context);
-              }
-            },
+            onPressed: chekk,
             icon: Icon(
               Icons.check,
               size: 25.sp,
@@ -195,5 +175,55 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> chekk() async {
+    if (xFile != null) {
+      CategoryModel categoryModel = CategoryModel.defaultModel();
+      if (isEdit) {
+        context
+            .read<ImageCubit>()
+            .deleteImage(path: widget.categoryModel!.storagePath);
+      }
+      String urlImage = await context.read<ImageCubit>().addImageInFireBase(
+            file: imageFile!,
+            fileName: "files/${xFile!.name}",
+          );
+      if (isEdit && context.mounted) {
+        context.read<CategoryBloc>().add(
+              CategoryUpdateEvent(
+                categoryModel: widget.categoryModel!.copyWith(
+                  imageUrl: urlImage,
+                  categoryName: textEditingController.text,
+                  storagePath: "files/${xFile!.name}",
+                ),
+              ),
+            );
+      } else {
+        CategoryModel categoryModel = CategoryModel(
+          storagePath: "files/${xFile!.name}",
+          countProduct: 0,
+          categoryName: textEditingController.text,
+          docId: "",
+          imageUrl: urlImage,
+        );
+        if (!context.mounted) return;
+        context
+            .read<CategoryBloc>()
+            .add(CategoryInsertEvent(categoryModel: categoryModel));
+      }
+      if (!context.mounted) return;
+    } else {
+      if (isEdit) {
+        context.read<CategoryBloc>().add(
+              CategoryUpdateEvent(
+                categoryModel: widget.categoryModel!.copyWith(
+                  categoryName: textEditingController.text,
+                ),
+              ),
+            );
+      }
+    }
+    Navigator.pop(context);
   }
 }
