@@ -4,7 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/blocs/category/category_bloc.dart';
+import 'package:gavhar_app/blocs/category/category_event.dart';
 import 'package:gavhar_app/cubits/image/image_cubit.dart';
+import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -58,6 +61,18 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                           file: imageFile!,
                           fileName: "files/${xFile!.name}",
                         );
+                CategoryModel categoryModel = CategoryModel(
+                  storagePath: "files/${xFile!.name}",
+                  countProduct: 0,
+                  categoryName: "Uzuk",
+                  docId: "",
+                  imageUrl: urlImage,
+                );
+                if (!context.mounted) return;
+                context
+                    .read<CategoryBloc>()
+                    .add(CategoryInsertEvent(categoryModel: categoryModel));
+                Navigator.pop(context);
               }
             },
             icon: Icon(

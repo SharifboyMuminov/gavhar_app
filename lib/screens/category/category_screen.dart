@@ -4,7 +4,6 @@ import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
-import 'package:gavhar_app/screens/widgets/background_item.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
