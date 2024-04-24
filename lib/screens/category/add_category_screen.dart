@@ -16,7 +16,9 @@ import 'package:gavhar_app/utils/size_app.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddCategoryScreen extends StatefulWidget {
-  const AddCategoryScreen({super.key});
+  const AddCategoryScreen({super.key, this.categoryModel});
+
+  final CategoryModel? categoryModel;
 
   @override
   State<AddCategoryScreen> createState() => _AddCategoryScreenState();
@@ -26,7 +28,18 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
   File? imageFile;
   XFile? xFile;
   TextEditingController textEditingController = TextEditingController();
-  Uint8List? uint8list;
+  bool isEdit = false;
+
+  @override
+  void initState() {
+    if (widget.categoryModel != null) {
+      isEdit = true;
+
+      textEditingController.text = widget.categoryModel!.categoryName;
+    }
+    // debugPrint(isEdit.toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +62,26 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             defaultTargetPlatform == TargetPlatform.iOS
                 ? Icons.arrow_back_ios_new
                 : Icons.arrow_back,
-            size: 24.sp,
+            size: 25.sp,
           ),
         ),
         actions: [
+          if (isEdit)
+            IconButton(
+              onPressed: () {
+                context
+                    .read<ImageCubit>()
+                    .deleteImage(path: widget.categoryModel!.storagePath);
+                context.read<CategoryBloc>().add(
+                    CategoryDeleteEvent(categoryModel: widget.categoryModel!));
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.redAccent,
+                size: 25.sp,
+              ),
+            ),
           IconButton(
             onPressed: () async {
               if (xFile != null) {
@@ -64,7 +93,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                 CategoryModel categoryModel = CategoryModel(
                   storagePath: "files/${xFile!.name}",
                   countProduct: 0,
-                  categoryName: "Uzuk",
+                  categoryName: textEditingController.text,
                   docId: "",
                   imageUrl: urlImage,
                 );
@@ -77,7 +106,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
             },
             icon: Icon(
               Icons.check,
-              size: 28.sp,
+              size: 25.sp,
             ),
           ),
           SizedBox(width: 10.we),
@@ -94,9 +123,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
                 image: DecorationImage(
-                  image: xFile == null
-                      ? const AssetImage(AppConst.inputImage)
-                      : FileImage(imageFile!) as ImageProvider<Object>,
+                  image: isEdit && xFile == null
+                      ? NetworkImage(widget.categoryModel!.imageUrl)
+                      : xFile == null
+                          ? const AssetImage(AppConst.inputImage)
+                          : FileImage(imageFile!) as ImageProvider<Object>,
                   fit: BoxFit.cover,
                 ),
                 boxShadow: [

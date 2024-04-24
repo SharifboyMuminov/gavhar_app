@@ -1,4 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
@@ -7,6 +11,7 @@ import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
+import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -65,12 +70,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 StaggerGridMyWidget(
                   child: List.generate(state.categories.length, (index) {
                     return Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.he),
+                      // padding: EdgeInsets.symmetric(vertical: 10.he),
                       alignment: Alignment.bottomCenter,
                       height: index.isEven ? 200.he : 250.he,
                       decoration: BoxDecoration(
                         color: AppColors.c_FFFFFF,
                         boxShadow: [
+                          // NetworkImage(state.categories[index].imageUrl)
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.27),
                             blurRadius: 30,
@@ -79,26 +85,69 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           ),
                         ],
                         borderRadius: BorderRadius.circular(10.r),
-                        image: DecorationImage(
-                          image: NetworkImage(state.categories[index].imageUrl),
-                          fit: BoxFit.cover,
-                        ),
                       ),
-                      child: Text(
-                        state.categories[index].categoryName,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: AppColors.c_FFFFFF,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.sp,
-                          shadows: [
-                            BoxShadow(
-                              color: Colors.amber.withOpacity(0.7),
-                              blurRadius: 10,
-                              spreadRadius: 10,
-                              offset: const Offset(0, 0),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r)),
+                        ),
+                        onLongPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AddCategoryScreen(
+                                    categoryModel: state.categories[index]);
+                                //
+                              },
+                            ),
+                          );
+                        },
+                        onPressed: () {},
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10.r),
+                              child: CachedNetworkImage(
+                                imageUrl: state.categories[index].imageUrl,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator.adaptive(),
+                                errorWidget: (context, url, error) {
+                                  debugPrint("errorWidget asdfasd asdf asdafd");
+                                  return Image.asset(
+                                    AppConst.notImage,
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: index.isEven ? 200.he : 250.he,
+                                  );
+                                },
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: index.isEven ? 200.he : 250.he,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(
+                                state.categories[index].categoryName,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: AppColors.c_FFFFFF,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20.sp,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.amber.withOpacity(0.7),
+                                      blurRadius: 10,
+                                      spreadRadius: 10,
+                                      offset: const Offset(0, 0),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
