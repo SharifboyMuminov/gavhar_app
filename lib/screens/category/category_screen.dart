@@ -16,9 +16,6 @@ class CategoryScreen extends StatefulWidget {
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-
-
-
 class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
@@ -66,7 +63,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             return Stack(
               children: [
                 StaggerGridMyWidget(
-                  child: List.generate(20, (index) {
+                  child: List.generate(state.categories.length, (index) {
                     return Container(
                       padding: EdgeInsets.symmetric(vertical: 10.he),
                       alignment: Alignment.bottomCenter,
