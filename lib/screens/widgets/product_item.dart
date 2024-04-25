@@ -77,7 +77,7 @@ class ProductItem extends StatelessWidget {
                   backgroundColor: Colors.orange.withOpacity(0.4),
                 ),
                 onLongPress: onLongPress,
-                onPressed: null,
+                onPressed: onTab,
                 child: Icon(
                   Icons.check,
                   color: Colors.white,

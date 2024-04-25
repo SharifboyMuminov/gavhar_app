@@ -93,7 +93,16 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
                         setState(() {});
                       },
                       chek: clickProducts.contains(state.products[index]),
-                      onTab: () {},
+                      onTab: () {
+                        if (clickProducts.isNotEmpty) {
+                          if (clickProducts.contains(state.products[index])) {
+                            clickProducts.remove(state.products[index]);
+                          } else {
+                            clickProducts.add(state.products[index]);
+                          }
+                          setState(() {});
+                        }
+                      },
                     );
                   },
                 ),
