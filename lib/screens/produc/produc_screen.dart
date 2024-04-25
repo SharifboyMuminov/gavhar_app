@@ -6,7 +6,7 @@ import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
-import 'package:gavhar_app/screens/produc/widget/product_item.dart';
+import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 

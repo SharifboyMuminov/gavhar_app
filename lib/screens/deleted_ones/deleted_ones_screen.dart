@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
 import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_state.dart';
-import 'package:gavhar_app/screens/produc/widget/product_item.dart';
+import 'package:gavhar_app/data/models/product/product_model.dart';
+import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
@@ -15,6 +16,8 @@ class DeletedOnesScreen extends StatefulWidget {
 }
 
 class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
+  List<ProductModel> clickProducts = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +31,26 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          if (clickProducts.isNotEmpty)
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.replay,
+                color: Colors.black,
+                size: 25.sp,
+              ),
+            ),
+          if (clickProducts.isNotEmpty)
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.delete,
+                color: Colors.redAccent,
+                size: 25.sp,
+              ),
+            ),
+        ],
       ),
       body: BlocBuilder<DeletedOnesBloc, DeletedOnesState>(
         builder: (BuildContext context, DeletedOnesState state) {
@@ -62,9 +85,14 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
                     return ProductItem(
                       productModel: state.products[index],
                       onLongPress: () {
-                        // context.read<ProductBloc>().add(ProductDeleteEvent(
-                        //     productModel: state.products[index]));
+                        if (clickProducts.contains(state.products[index])) {
+                          clickProducts.remove(state.products[index]);
+                        } else {
+                          clickProducts.add(state.products[index]);
+                        }
+                        setState(() {});
                       },
+                      chek: clickProducts.contains(state.products[index]),
                       onTab: () {},
                     );
                   },
