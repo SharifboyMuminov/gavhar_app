@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
-import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
-import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/product_item.dart';
-import 'package:gavhar_app/screens/widgets/backgeound_conteyner.dart';
-import 'package:gavhar_app/screens/widgets/background_item.dart';
-import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -45,7 +40,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const AddProductScreen();
+                    return const AddAndUpdateScreen();
                   },
                 ),
               ).then((value) {
@@ -100,8 +95,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         });
                       },
                       onLongPress: () {
-                        context.read<ProductBloc>().add(
-                            ProductDeleteEvent(productModel: state.products[index]));
+                        // context.read<ProductBloc>().add(ProductDeleteEvent(
+                        //     productModel: state.products[index]));
                       },
                     );
                   },

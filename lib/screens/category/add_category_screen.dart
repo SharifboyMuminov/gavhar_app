@@ -69,12 +69,54 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           if (isEdit)
             IconButton(
               onPressed: () {
-                context
-                    .read<ImageCubit>()
-                    .deleteImage(path: widget.categoryModel!.storagePath);
-                context.read<CategoryBloc>().add(
-                    CategoryDeleteEvent(categoryModel: widget.categoryModel!));
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog.adaptive(
+                        title: Text(
+                          "Do you want to reduce the information?",
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 20.sp),
+                        ),
+                        actions: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero),
+                            ),
+                            onPressed: () {
+                              context.read<ImageCubit>().deleteImage(
+                                  path: widget.categoryModel!.storagePath);
+                              context.read<CategoryBloc>().add(
+                                  CategoryDeleteEvent(
+                                      categoryModel: widget.categoryModel!));
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Ok",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    });
               },
               icon: Icon(
                 Icons.delete,
@@ -92,88 +134,91 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           SizedBox(width: 10.we),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.we),
-        child: Column(
-          children: [
-            SizedBox(width: width, height: 40.he),
-            Container(
-              width: width - 100,
-              height: width - 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                image: DecorationImage(
-                  image: isEdit && xFile == null
-                      ? NetworkImage(widget.categoryModel!.imageUrl)
-                      : xFile == null
-                          ? const AssetImage(AppConst.inputImage)
-                          : FileImage(imageFile!) as ImageProvider<Object>,
-                  fit: BoxFit.cover,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    blurRadius: 40,
-                    spreadRadius: 5,
-                    offset: const Offset(0, 10),
+      body: context.watch<ImageCubit>().state
+          ? const Center(child: CircularProgressIndicator.adaptive())
+          : SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20.we),
+              child: Column(
+                children: [
+                  SizedBox(width: width, height: 40.he),
+                  Container(
+                    width: width - 100,
+                    height: width - 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      image: DecorationImage(
+                        image: isEdit && xFile == null
+                            ? NetworkImage(widget.categoryModel!.imageUrl)
+                            : xFile == null
+                                ? const AssetImage(AppConst.inputImage)
+                                : FileImage(imageFile!)
+                                    as ImageProvider<Object>,
+                        fit: BoxFit.cover,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          blurRadius: 40,
+                          spreadRadius: 5,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                      ),
+                      onPressed: () {
+                        showImageDialog(
+                          context,
+                          onChaneXFile: (ChangeImage changeImage) {
+                            if (changeImage.xFile != null) {
+                              xFile = changeImage.xFile;
+                              imageFile = File(xFile!.path);
+                            }
+                            setState(() {});
+                          },
+                        );
+                      },
+                      child: xFile == null
+                          ? const SizedBox()
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  height: 50.he,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    color: Colors.white24,
+                                  ),
+                                  child: Text(
+                                    "Set Image",
+                                    style: TextStyle(
+                                      color: Colors.amber,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                  SizedBox(height: 20.he),
+                  TextInputMyWidget(
+                    textInputAction: TextInputAction.done,
+                    label: 'Enter category name',
+                    textEditingController: textEditingController,
+                    isError: false,
                   ),
                 ],
               ),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                ),
-                onPressed: () {
-                  showImageDialog(
-                    context,
-                    onChaneXFile: (ChangeImage changeImage) {
-                      if (changeImage.xFile != null) {
-                        xFile = changeImage.xFile;
-                        imageFile = File(xFile!.path);
-                      }
-                      setState(() {});
-                    },
-                  );
-                },
-                child: xFile == null
-                    ? const SizedBox()
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            height: 50.he,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: Colors.white24,
-                            ),
-                            child: Text(
-                              "Set Image",
-                              style: TextStyle(
-                                color: Colors.amber,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 18.sp,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
             ),
-            SizedBox(height: 20.he),
-            TextInputMyWidget(
-              textInputAction: TextInputAction.done,
-              label: 'Enter category name',
-              textEditingController: textEditingController,
-              isError: false,
-            ),
-          ],
-        ),
-      ),
     );
   }
 

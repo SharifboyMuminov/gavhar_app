@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
 import 'package:gavhar_app/blocs/category/category_state.dart';
+import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 
@@ -27,6 +28,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
             value.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
         // debugPrint("product --------${products}");
       });
+      globalCategories = categories;
       emit(SuccessCategoryState(categories: categories));
     } on FirebaseException catch (_) {
       emit(ErrorCategoryState(errorText: "on FirebaseException catch (_)"));

@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
+import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
+import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,44 +52,22 @@ class _InfoScreenState extends State<InfoScreen> {
             actions: [
               IconButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return AddAndUpdateScreen(
-                  //         context: context,
-                  //         productModel: productModel,
-                  //         request: widget.isRequest,
-                  //       );
-                  //     },
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return AddAndUpdateScreen(
+                          productModel: productModel,
+                        );
+                      },
+                    ),
+                  );
                 },
                 icon: Icon(
                   Icons.edit,
                   size: 25.sp,
                 ),
               ),
-              // if (widget.isRequest)
-              //   IconButton(
-              //     onPressed: () {
-              //       // context.read<ProductViewModel>().insertProducts(
-              //       //     context,
-              //       //     productModel: productModel);
-              //       // globalAnimationController.forward();
-              //     },
-              //     icon: Icon(
-              //     ,
-              //     size: 24.sp,
-              //     ),
-              //   ),
-              //   IconButton(
-              //     onPressed: () {},
-              //     icon: Icon(
-              //       Platforma.android ? Icons.arrow_back_ios_new : Icons
-              //           .arrow_back,
-              //     ),
-              //   ),
             ],
             expandedHeight: 400.he,
             flexibleSpace: FlexibleSpaceBar(
@@ -94,9 +75,21 @@ class _InfoScreenState extends State<InfoScreen> {
                 children: [
                   SizedBox(height: 50.he),
                   Expanded(
-                    child: Image.asset(
-                      productModel.imageUrl,
-                      fit: BoxFit.cover,
+                    child: Hero(
+                      tag: productModel.docId,
+                      child: CachedNetworkImage(
+                        imageUrl: productModel.imageUrl,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator.adaptive(),
+                        errorWidget: (context, url, error) {
+                          debugPrint("errorWidget asdfasd asdf asdafd");
+                          return Image.asset(
+                            AppConst.notImage,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
