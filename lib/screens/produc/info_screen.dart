@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
+import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/cubits/image/image_cubit.dart';
@@ -58,6 +60,8 @@ class _InfoScreenState extends State<InfoScreen> {
               IconButton(
                 onPressed: () {
                   showAskDialog(context, onTabOk: () {
+                    context.read<DeletedOnesBloc>().add(
+                        DeletedOnesInsertEvent(productModel: productModel));
                     context
                         .read<ImageCubit>()
                         .deleteImage(path: productModel.storagePath);

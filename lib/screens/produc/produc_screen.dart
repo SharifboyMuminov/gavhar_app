@@ -119,14 +119,3 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 }
-
-// final ProductModel globalProduct = ProductModel(
-//   storagePath: "",
-//   description: "asdgfa sasdg asdga sdfa sdga sfgabds asfgbtrbadf sfgb",
-//   gender: "Women",
-//   nameProduct: "Zirak",
-//   categoryId: "",
-//   docId: "",
-//   imageUrl: "assets/images/rings.png",
-//   price: 50000000000,
-// );
