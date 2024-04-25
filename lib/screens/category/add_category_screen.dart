@@ -8,6 +8,7 @@ import 'package:gavhar_app/blocs/category/category_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
 import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
+import 'package:gavhar_app/screens/widgets/dialog/ask_dialog.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -69,54 +70,15 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
           if (isEdit)
             IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog.adaptive(
-                        title: Text(
-                          "Do you want to reduce the information?",
-                          style:
-                              TextStyle(color: Colors.black, fontSize: 20.sp),
-                        ),
-                        actions: [
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Cancel",
-                              style: TextStyle(fontSize: 16.sp),
-                            ),
-                          ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-                            ),
-                            onPressed: () {
-                              context.read<ImageCubit>().deleteImage(
-                                  path: widget.categoryModel!.storagePath);
-                              context.read<CategoryBloc>().add(
-                                  CategoryDeleteEvent(
-                                      categoryModel: widget.categoryModel!));
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "Ok",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
+                showAskDialog(context, onTabOk: () {
+                  context
+                      .read<ImageCubit>()
+                      .deleteImage(path: widget.categoryModel!.storagePath);
+                  context.read<CategoryBloc>().add(CategoryDeleteEvent(
+                      categoryModel: widget.categoryModel!));
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                });
               },
               icon: Icon(
                 Icons.delete,

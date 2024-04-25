@@ -7,6 +7,7 @@ import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/info_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/product_item.dart';
+import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -63,6 +64,13 @@ class _ProductScreenState extends State<ProductScreen> {
           }
 
           if (state is SuccessProductState) {
+            if (state.products.isEmpty) {
+              return Center(
+                  child: Image.asset(
+                AppConst.emptyData,
+                width: 250.we,
+              ));
+            }
             return Stack(
               children: [
                 // const BackGroundItem(),

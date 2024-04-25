@@ -1,9 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
+import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
+import 'package:gavhar_app/screens/widgets/dialog/ask_dialog.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/platforma.dart';
@@ -52,6 +57,25 @@ class _InfoScreenState extends State<InfoScreen> {
             actions: [
               IconButton(
                 onPressed: () {
+                  showAskDialog(context, onTabOk: () {
+                    context
+                        .read<ImageCubit>()
+                        .deleteImage(path: productModel.storagePath);
+                    context
+                        .read<ProductBloc>()
+                        .add(ProductDeleteEvent(productModel: productModel));
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  });
+                },
+                icon: Icon(
+                  Icons.delete,
+                  color: Colors.redAccent,
+                  size: 25.sp,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -73,7 +97,7 @@ class _InfoScreenState extends State<InfoScreen> {
             flexibleSpace: FlexibleSpaceBar(
               background: Column(
                 children: [
-                  SizedBox(height: 50.he),
+                  SizedBox(height: 90.he),
                   Expanded(
                     child: Hero(
                       tag: productModel.docId,
@@ -98,7 +122,6 @@ class _InfoScreenState extends State<InfoScreen> {
           ),
           SliverList.list(
             children: [
-              // GridView.extent(maxCrossAxisExtent: maxCrossAxisExtent),
               Container(
                 color: AppColors.c_FFFFFF,
                 child: Container(

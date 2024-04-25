@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/category_screen.dart';
+import 'package:gavhar_app/screens/deleted_ones/deleted_ones_screen.dart';
 import 'package:gavhar_app/screens/produc/produc_screen.dart';
 import 'package:gavhar_app/screens/tab_box/cubits/tab_box_cubit.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
-
-import '../request/request_screen.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -23,7 +22,7 @@ class _TabScreenState extends State<TabScreen>
   final List<Widget> _screens = const [
     CategoryScreen(),
     ProductScreen(),
-    RequestScreen(),
+    DeletedOnesScreen(),
   ];
 
   @override

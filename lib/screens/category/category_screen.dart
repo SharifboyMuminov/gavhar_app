@@ -65,6 +65,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
             return Center(child: Text(state.errorText));
           }
           if (state is SuccessCategoryState) {
+            if (state.categories.isEmpty) {
+              return Center(
+                  child: Image.asset(
+                AppConst.emptyData,
+                width: 250.we,
+              ));
+            }
             return Stack(
               children: [
                 StaggerGridMyWidget(
