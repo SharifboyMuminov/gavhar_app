@@ -218,38 +218,38 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
                     ).toList(),
                   ),
                   SizedBox(height: 20.he),
-                  DropdownMenu<String>(
-                    selectedTrailingIcon: Icon(
-                      Icons.check,
-                      size: 18.sp,
-                      color: Colors.black,
-                    ),
-                    label: Text(
-                      "Gender",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    width: width - 50,
-                    initialSelection: textGender,
-                    onSelected: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(
-                        () {
-                          textGender = value!;
-                        },
-                      );
-                    },
-                    dropdownMenuEntries:
-                        listGender.map<DropdownMenuEntry<String>>(
-                      (String value) {
-                        return DropdownMenuEntry<String>(
-                            value: value, label: value);
-                      },
-                    ).toList(),
-                  ),
+                  // DropdownMenu<String>(
+                  //   selectedTrailingIcon: Icon(
+                  //     Icons.check,
+                  //     size: 18.sp,
+                  //     color: Colors.black,
+                  //   ),
+                  //   label: Text(
+                  //     "Gender",
+                  //     style: TextStyle(
+                  //       color: Colors.black,
+                  //       fontSize: 18.sp,
+                  //       fontWeight: FontWeight.w600,
+                  //     ),
+                  //   ),
+                  //   width: width - 50,
+                  //   initialSelection: textGender,
+                  //   onSelected: (String? value) {
+                  //     // This is called when the user selects an item.
+                  //     setState(
+                  //       () {
+                  //         textGender = value!;
+                  //       },
+                  //     );
+                  //   },
+                  //   dropdownMenuEntries:
+                  //       listGender.map<DropdownMenuEntry<String>>(
+                  //     (String value) {
+                  //       return DropdownMenuEntry<String>(
+                  //           value: value, label: value);
+                  //     },
+                  //   ).toList(),
+                  // ),
                 ],
               ),
             ),

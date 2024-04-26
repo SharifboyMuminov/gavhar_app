@@ -179,9 +179,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       SizedBox(height: 30.he),
                       TextButton(
                         onPressed: () async {
-                          // https://web.telegram.org/a/#-1001391791788
-
-                          var url = Uri.parse("https://t.me/chust_aurum");
+                          var url = Uri.parse("https://t.me/ego_uz");
                           if (await canLaunchUrl(url)) {
                             await launchUrl(url);
                           }
@@ -190,7 +188,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           children: [
                             SvgPicture.asset(
                               "assets/icons/telegram.svg",
-                              width: 60.we,
+                              width: 40.we,
                             ),
                             SizedBox(width: 30.we),
                             Text(
