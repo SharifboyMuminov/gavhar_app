@@ -62,6 +62,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (BuildContext context, CategoryState state) {
           if (state is ErrorCategoryState) {
+            if (state.errorText == "catch (_)") {
+              return Image.asset(AppConst.errorImage);
+            }
             return Center(child: Text(state.errorText));
           }
           if (state is SuccessCategoryState) {

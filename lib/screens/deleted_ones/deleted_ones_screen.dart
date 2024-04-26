@@ -58,6 +58,9 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
       body: BlocBuilder<DeletedOnesBloc, DeletedOnesState>(
         builder: (BuildContext context, DeletedOnesState state) {
           if (state is ErrorDeletedOnesState) {
+            if (state.errorText == "catch (_)") {
+              return Image.asset(AppConst.errorImage);
+            }
             return Center(child: Text(state.errorText));
           }
           if (state is ShowSnackBarDeletedOnesState) {
@@ -92,10 +95,11 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
                       top: 20.he, left: 18.we, right: 18.we, bottom: 100.he),
                   itemCount: state.products.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20.he,
-                      crossAxisSpacing: 15.we,
-                      childAspectRatio: 0.7),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20.he,
+                    crossAxisSpacing: 15.we,
+                    childAspectRatio: 0.75,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                     return ProductItem(
                       productModel: state.products[index],

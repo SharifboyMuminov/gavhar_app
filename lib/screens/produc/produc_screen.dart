@@ -60,6 +60,9 @@ class _ProductScreenState extends State<ProductScreen> {
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (BuildContext context, ProductState state) {
           if (state is ErrorProductState) {
+            if (state.errorText == "catch (_)") {
+              return Image.asset(AppConst.errorImage);
+            }
             return Center(child: Text(state.errorText));
           }
 
@@ -82,7 +85,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 20.he,
                       crossAxisSpacing: 15.we,
-                      childAspectRatio: 0.7
+                      childAspectRatio: 0.75
                       // mainAxisExtent: 1
                       ),
                   itemBuilder: (BuildContext context, int index) {
