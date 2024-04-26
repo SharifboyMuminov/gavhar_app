@@ -11,6 +11,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ProductInsertEvent>(_insertProduct);
     on<ProductDeleteEvent>(_deleteProduct);
     on<ProductUpdateEvent>(_updateProduct);
+    on<ProductInsertForListEvent>(_insertProductForList);
   }
 
   Future<void> _callProduct(ProductCallEvent event, emit) async {
@@ -84,6 +85,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           .doc(event.productModel.docId)
           .update(event.productModel.toJson());
 
+      add(ProductCallEvent());
+    } on FirebaseException catch (_) {
+      // debugPrint("Error insertProduct on FirebaseException catch (_)");
+      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
+    } catch (_) {
+      // debugPrint("Error insertProduct catch (_)");
+      emit(ErrorProductState(errorText: "catch (_)"));
+    }
+  }
+
+  _insertProductForList(ProductInsertForListEvent event, emit) async {
+    try {
+      for (int i = 0; i < event.productModels.length; i++) {
+        final cf = await FirebaseFirestore.instance
+            .collection(AppConst.productTableName)
+            .add(event.productModels[i].toJson());
+        await FirebaseFirestore.instance
+            .collection(AppConst.productTableName)
+            .doc(cf.id)
+            .update({"doc_id": cf.id});
+      }
+
+      emit(ProductShowSnackBarState(text: 'Malumotlar qaytarildi :)'));
       add(ProductCallEvent());
     } on FirebaseException catch (_) {
       // debugPrint("Error insertProduct on FirebaseException catch (_)");

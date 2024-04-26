@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
+import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_state.dart';
+import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -34,7 +37,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
         actions: [
           if (clickProducts.isNotEmpty)
             IconButton(
-              onPressed: () {},
+              onPressed: _insertProducts,
               icon: Icon(
                 Icons.replay,
                 color: Colors.black,
@@ -43,7 +46,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
             ),
           if (clickProducts.isNotEmpty)
             IconButton(
-              onPressed: () {},
+              onPressed: _deleteProduct,
               icon: Icon(
                 Icons.delete,
                 color: Colors.redAccent,
@@ -56,6 +59,20 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
         builder: (BuildContext context, DeletedOnesState state) {
           if (state is ErrorDeletedOnesState) {
             return Center(child: Text(state.errorText));
+          }
+          if (state is ShowSnackBarDeletedOnesState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: state.color,
+                content: Text(
+                  state.text,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                  ),
+                ),
+              ),
+            );
           }
 
           if (state is SuccessDeletedOnesState) {
@@ -78,9 +95,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 20.he,
                       crossAxisSpacing: 15.we,
-                      childAspectRatio: 0.7
-                      // mainAxisExtent: 1
-                      ),
+                      childAspectRatio: 0.7),
                   itemBuilder: (BuildContext context, int index) {
                     return ProductItem(
                       productModel: state.products[index],
@@ -114,5 +129,23 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
         },
       ),
     );
+  }
+
+  _deleteProduct({bool delete_image = true}) {
+    context.read<DeletedOnesBloc>().add(DeletedOnesDeleteListEvent(
+        productModels: clickProducts, delete_image: delete_image));
+  }
+
+  _insertProducts() {
+    _deleteProduct(delete_image: false);
+    if (clickProducts.length == 1) {
+      context
+          .read<ProductBloc>()
+          .add(ProductInsertEvent(productModel: clickProducts[0]));
+    } else {
+      context
+          .read<ProductBloc>()
+          .add(ProductInsertForListEvent(productModels: clickProducts));
+    }
   }
 }

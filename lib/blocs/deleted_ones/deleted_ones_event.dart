@@ -10,10 +10,16 @@ class DeletedOnesDeleteEvent extends DeletedOnesEvent {
   DeletedOnesDeleteEvent({required this.productModel});
 }
 
+class DeletedOnesDeleteListEvent extends DeletedOnesEvent {
+  List<ProductModel> productModels;
+  bool delete_image;
+
+  DeletedOnesDeleteListEvent(
+      {required this.productModels, this.delete_image = true});
+}
+
 class DeletedOnesInsertEvent extends DeletedOnesEvent {
   ProductModel productModel;
 
   DeletedOnesInsertEvent({required this.productModel});
 }
-
-

@@ -26,7 +26,7 @@ class ImageCubit extends Cubit<bool> {
     return imageUrl;
   }
 
-  Future<void> deleteImage({required String path}) async {
+  Future<String> deleteImage({required String path}) async {
     final storageRef = FirebaseStorage.instance.ref();
     var desertRef = storageRef.child(path);
 
@@ -35,5 +35,6 @@ class ImageCubit extends Cubit<bool> {
     } catch (_) {
       debugPrint(_.toString());
     }
+    return "";
   }
 }

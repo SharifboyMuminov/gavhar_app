@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_state.dart';
+import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 
@@ -10,6 +11,7 @@ class DeletedOnesBloc extends Bloc<DeletedOnesEvent, DeletedOnesState> {
     on<DeletedOnesCallEvent>(_callProduct);
     on<DeletedOnesInsertEvent>(_insertProduct);
     on<DeletedOnesDeleteEvent>(_deleteProduct);
+    on<DeletedOnesDeleteListEvent>(_deleteForListProduct);
   }
 
   Future<void> _callProduct(DeletedOnesCallEvent event, emit) async {
@@ -64,6 +66,35 @@ class DeletedOnesBloc extends Bloc<DeletedOnesEvent, DeletedOnesState> {
           .doc(event.productModel.docId)
           .delete();
 
+      add(DeletedOnesCallEvent());
+    } on FirebaseException catch (_) {
+      // debugPrint("Error insertProduct on FirebaseException catch (_)");
+      emit(ErrorDeletedOnesState(errorText: "on FirebaseException catch (_)"));
+    } catch (_) {
+      // debugPrint("Error insertProduct catch (_)");
+      emit(ErrorDeletedOnesState(errorText: "catch (_)"));
+    }
+  }
+
+  Future<void> _deleteForListProduct(
+      DeletedOnesDeleteListEvent event, emit) async {
+    emit(LoadingDeletedOnesState());
+    try {
+      ImageCubit imageCubit = ImageCubit();
+
+      for (int i = 0; i < event.productModels.length; i++) {
+        if (event.delete_image) {
+          await imageCubit.deleteImage(
+              path: event.productModels[i].storagePath);
+        }
+        await FirebaseFirestore.instance
+            .collection(AppConst.productDeletedOnesTableName)
+            .doc(event.productModels[i].docId)
+            .delete();
+      }
+
+      emit(ShowSnackBarDeletedOnesState(
+          text: "Malumotlar ochirilish tugatildi :)"));
       add(DeletedOnesCallEvent());
     } on FirebaseException catch (_) {
       // debugPrint("Error insertProduct on FirebaseException catch (_)");

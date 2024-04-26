@@ -16,6 +16,12 @@ class ProductInsertEvent extends ProductEvent {
   ProductInsertEvent({required this.productModel});
 }
 
+class ProductInsertForListEvent extends ProductEvent {
+  List<ProductModel> productModels;
+
+  ProductInsertForListEvent({required this.productModels});
+}
+
 class ProductUpdateEvent extends ProductEvent {
   ProductModel productModel;
 
