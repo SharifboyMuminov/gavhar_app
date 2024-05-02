@@ -10,6 +10,7 @@ import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
+import 'package:gavhar_app/screens/produc/widget/add_show_image.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -29,12 +30,13 @@ class AddAndUpdateScreen extends StatefulWidget {
 class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   String textGender = "Universal";
   List<String> listGender = ["Men", "Women", "Universal"];
-  File? imageFile;
-  XFile? xFile;
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerPrice = TextEditingController();
   TextEditingController controllerDescription = TextEditingController();
   CategoryModel? currentCategoryModel;
+
+  File? imageFile;
+  XFile? xFile;
 
   bool isEdit = false;
 
@@ -97,72 +99,47 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
                   EdgeInsets.only(left: 20.we, right: 20.we, bottom: 50.he),
               child: Column(
                 children: [
-                  SizedBox(width: width, height: 40.he),
-                  Container(
-                    width: width - 100,
-                    height: width - 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.r),
-                      image: DecorationImage(
-                        image: isEdit && xFile == null
-                            ? NetworkImage(widget.productModel!.imageUrl)
-                            : xFile == null
-                                ? const AssetImage(AppConst.inputImage)
-                                : FileImage(imageFile!)
-                                    as ImageProvider<Object>,
-                        fit: BoxFit.cover,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 40,
-                          spreadRadius: 5,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                    ),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      onPressed: () {
-                        showImageDialog(
-                          context,
-                          onChaneXFile: (ChangeImage changeImage) {
-                            xFile = changeImage.xFile;
-                            imageFile = File(changeImage.xFile!.path);
-                            setState(() {});
+                  SizedBox(width: width, height: 30.he),
+                  Row(
+                    children: [
+                      ShowImageForAdd(
+                          imageProvider: isEdit && xFile == null
+                              ? NetworkImage(widget.productModel!.imageUrl)
+                              : xFile == null
+                                  ? const AssetImage(AppConst.inputImage)
+                                  : FileImage(imageFile!)
+                                      as ImageProvider<Object>,
+                          onTab: () {
+                            showImageDialog(
+                              context,
+                              onChaneXFile: (ChangeImage changeImage) {
+                                xFile = changeImage.xFile;
+                                imageFile = File(changeImage.xFile!.path);
+                                setState(() {});
+                              },
+                            );
                           },
-                        );
-                      },
-                      child: xFile == null || (!isEdit)
-                          ? const SizedBox()
-                          : Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  width: double.infinity,
-                                  height: 50.he,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    color: Colors.white24,
-                                  ),
-                                  child: Text(
-                                    "Set Image",
-                                    style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18.sp,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                    ),
+                          showSetImage: xFile == null || !isEdit),
+                      SizedBox(width: 10.we),
+                      ShowImageForAdd(
+                          imageProvider: isEdit && xFile == null
+                              ? NetworkImage(widget.productModel!.imageUrl)
+                              : xFile == null
+                                  ? const AssetImage(AppConst.inputImage)
+                                  : FileImage(imageFile!)
+                                      as ImageProvider<Object>,
+                          onTab: () {
+                            showImageDialog(
+                              context,
+                              onChaneXFile: (ChangeImage changeImage) {
+                                xFile = changeImage.xFile;
+                                imageFile = File(changeImage.xFile!.path);
+                                setState(() {});
+                              },
+                            );
+                          },
+                          showSetImage: xFile == null || !isEdit),
+                    ],
                   ),
                   SizedBox(height: 15.he),
                   TextInputMyWidget(
@@ -334,5 +311,13 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
     return controllerName.text.isNotEmpty &&
         controllerDescription.text.isNotEmpty &&
         controllerPrice.text.isNotEmpty;
+  }
+
+  @override
+  void deactivate() {
+    controllerName.dispose();
+    controllerDescription.dispose();
+    controllerPrice.dispose();
+    super.deactivate();
   }
 }
