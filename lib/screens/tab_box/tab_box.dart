@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,21 +81,21 @@ class _TabScreenState extends State<TabScreen>
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 0);
                           },
-                          icon: Icons.home,
+                          icon: CupertinoIcons.house,
                           active: context.read<TabBoxCubit>().state == 0,
                         ),
                         _getButton(
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 1);
                           },
-                          icon: Icons.shopping_basket,
+                          icon: CupertinoIcons.shopping_cart,
                           active: context.read<TabBoxCubit>().state == 1,
                         ),
                         _getButton(
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 2);
                           },
-                          icon: Icons.request_page,
+                          icon: CupertinoIcons.delete,
                           active: context.read<TabBoxCubit>().state == 2,
                         ),
                         // _getButton(

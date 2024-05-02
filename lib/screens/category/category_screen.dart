@@ -7,9 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_state.dart';
+import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
-import 'package:gavhar_app/screens/produc/widget/stagger_mygrid.dart';
+import 'package:gavhar_app/screens/category/show_product_for_id.dart';
+import 'package:gavhar_app/screens/produc/produc_screen.dart';
+import 'package:gavhar_app/screens/category/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
@@ -114,7 +118,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ),
                           );
                         },
-                        onPressed: () {},
+                        onPressed: () {
+                          debugPrint(state.categories[index].docId+"----------");
+                          context.read<ProductBloc>().add(
+                                ProductGetForCategoryIdEvent(
+                                  categoryId: state.categories[index].docId,
+                                ),
+                              );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const ShowProductForCategoryId();
+                              },
+                            ),
+                          ).then((value) {
+                            context.read<ProductBloc>().add(ProductCallEvent());
+                          });
+                        },
                         child: Stack(
                           children: [
                             ClipRRect(

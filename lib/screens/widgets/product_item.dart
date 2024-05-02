@@ -34,46 +34,49 @@ class ProductItem extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: productModel.imageUrls.first,
         imageBuilder: (context, imageProvider) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              color: AppColors.c_FFFFFF,
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  blurRadius: 30,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 17),
+          return Hero(
+            tag: productModel.docId,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.r),
+                color: AppColors.c_FFFFFF,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                if (chek)
-                  SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    blurRadius: 30,
+                    spreadRadius: 1,
+                    offset: const Offset(0, 17),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  if (chek)
+                    SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          backgroundColor: Colors.orange.withOpacity(0.4),
                         ),
-                        backgroundColor: Colors.orange.withOpacity(0.4),
-                      ),
-                      onLongPress: onLongPress,
-                      onPressed: onTab,
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 50.we,
+                        onLongPress: onLongPress,
+                        onPressed: onTab,
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 50.we,
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           );
         },

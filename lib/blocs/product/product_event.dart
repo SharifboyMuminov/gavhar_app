@@ -27,3 +27,9 @@ class ProductUpdateEvent extends ProductEvent {
 
   ProductUpdateEvent({required this.productModel});
 }
+
+class ProductGetForCategoryIdEvent extends ProductEvent {
+  String categoryId;
+
+  ProductGetForCategoryIdEvent({required this.categoryId});
+}

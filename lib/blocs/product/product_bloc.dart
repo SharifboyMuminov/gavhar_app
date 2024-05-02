@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
@@ -13,6 +13,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ProductDeleteEvent>(_deleteProduct);
     on<ProductUpdateEvent>(_updateProduct);
     on<ProductInsertForListEvent>(_insertProductForList);
+    on<ProductGetForCategoryIdEvent>(_getProductForId);
   }
 
   Future<void> _callProduct(ProductCallEvent event, emit) async {
@@ -26,12 +27,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           .get()
           .then((value) {
         // debugPrint(value.toString());
-        try{
+        try {
           products =
               value.docs.map((e) => ProductModel.fromJson(e.data())).toList();
-        }catch (error){
-          debugPrint("${error}----------");
-
+        } catch (error) {
+          // debugPrint("${error}----------");
         }
       });
       emit(SuccessProductState(products: products));
@@ -121,6 +121,34 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } catch (_) {
       // debugPrint("Error insertProduct catch (_)");
       emit(ErrorProductState(errorText: "catch (_)"));
+    }
+  }
+
+  Future<void> _getProductForId(
+      ProductGetForCategoryIdEvent event, emit) async {
+    emit(LoadingProductState());
+    List<ProductModel> products = [];
+
+    try {
+      await FirebaseFirestore.instance
+          .collection(AppConst.productTableName)
+          .where({"category_id": event.categoryId})
+          .get()
+          .then((value) {
+            // debugPrint(value.toString());
+            try {
+              products = value.docs
+                  .map((e) => ProductModel.fromJson(e.data()))
+                  .toList();
+            } catch (error) {
+              // debugPrint("${error}----------");
+            }
+          });
+      emit(SuccessProductState(products: products));
+    } on FirebaseException catch (_) {
+      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
+    } catch (error) {
+      emit(ErrorProductState(errorText: error.toString()));
     }
   }
 }
