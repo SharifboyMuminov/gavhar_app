@@ -131,7 +131,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       await FirebaseFirestore.instance
           .collection(AppConst.productTableName)
-          .where({"category_id": event.categoryId})
+          .where("category_id",isEqualTo: event.categoryId)
           .get()
           .then((value) {
             // debugPrint(value.toString());
