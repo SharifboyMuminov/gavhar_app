@@ -217,7 +217,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
         urlImageOne = await context.read<ImageCubit>().addImageInFireBase(
             file: imageFileOne!, fileName: "product_image/${xFileOne!.name}");
         urlImageTwo = await context.read<ImageCubit>().addImageInFireBase(
-            file: imageFileOne!, fileName: "product_image/${xFileTwo!.name}");
+            file: imageFileTwo!, fileName: "product_image/${xFileTwo!.name}");
 
         context.read<ProductBloc>().add(
               ProductInsertEvent(

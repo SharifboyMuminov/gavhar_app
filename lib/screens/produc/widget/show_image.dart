@@ -6,34 +6,37 @@ import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class ShowImage extends StatelessWidget {
-  const ShowImage({super.key, required this.productModel});
+  const ShowImage({
+    super.key,
+    required this.productModel,
+    this.isChangeImage = false,
+  });
 
   final ProductModel productModel;
+  final bool isChangeImage;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.we),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.r),
-          child: Hero(
-            tag: productModel.docId,
-            child: CachedNetworkImage(
+    // debugPrint("${productModel.imageUrls.length}  asdfasdf---");
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.we),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.r),
+        child: CachedNetworkImage(
+          fit: BoxFit.cover,
+          imageUrl: isChangeImage
+              ? productModel.imageUrls.last
+              : productModel.imageUrls.first,
+          placeholder: (context, url) =>
+              const CircularProgressIndicator.adaptive(),
+          errorWidget: (context, url, error) {
+            debugPrint("errorWidget asdfasd asdf asdafd");
+            return Image.asset(
+              AppConst.notImage,
               fit: BoxFit.cover,
-              imageUrl: productModel.imageUrls.first,
-              placeholder: (context, url) =>
-                  const CircularProgressIndicator.adaptive(),
-              errorWidget: (context, url, error) {
-                debugPrint("errorWidget asdfasd asdf asdafd");
-                return Image.asset(
-                  AppConst.notImage,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                );
-              },
-            ),
-          ),
+              width: double.infinity,
+            );
+          },
         ),
       ),
     );

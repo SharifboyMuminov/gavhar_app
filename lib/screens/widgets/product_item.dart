@@ -31,58 +31,55 @@ class ProductItem extends StatelessWidget {
       ),
       onPressed: onTab,
       onLongPress: onLongPress,
-      child: Hero(
-        tag: productModel.docId,
-        child: CachedNetworkImage(
-          imageUrl: productModel.imageUrls.first,
-          imageBuilder: (context, imageProvider) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r),
-                color: AppColors.c_FFFFFF,
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 30,
-                    spreadRadius: 1,
-                    offset: const Offset(0, 17),
-                  ),
-                ],
+      child: CachedNetworkImage(
+        imageUrl: productModel.imageUrls.first,
+        imageBuilder: (context, imageProvider) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.r),
+              color: AppColors.c_FFFFFF,
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
               ),
-              child: Stack(
-                children: [
-                  if (chek)
-                    SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          backgroundColor: Colors.orange.withOpacity(0.4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  blurRadius: 30,
+                  spreadRadius: 1,
+                  offset: const Offset(0, 17),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                if (chek)
+                  SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
-                        onLongPress: onLongPress,
-                        onPressed: onTab,
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 50.we,
-                        ),
+                        backgroundColor: Colors.orange.withOpacity(0.4),
+                      ),
+                      onLongPress: onLongPress,
+                      onPressed: onTab,
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 50.we,
                       ),
                     ),
-                ],
-              ),
-            );
-          },
-          placeholder: (context, url) =>
-              const CircularProgressIndicator.adaptive(),
-          errorWidget: (context, url, error) => Image.asset(AppConst.emptyData),
-        ),
+                  ),
+              ],
+            ),
+          );
+        },
+        placeholder: (context, url) =>
+            const CircularProgressIndicator.adaptive(),
+        errorWidget: (context, url, error) => Image.asset(AppConst.emptyData),
       ),
     );
   }

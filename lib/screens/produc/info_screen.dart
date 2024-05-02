@@ -102,7 +102,20 @@ class _InfoScreenState extends State<InfoScreen> {
               background: Column(
                 children: [
                   SizedBox(height: 100.he),
-                  ShowImage(productModel: productModel),
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        PageView(
+                          children: [
+                            ShowImage(productModel: productModel),
+                            ShowImage(
+                                productModel: productModel,
+                                isChangeImage: true),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
