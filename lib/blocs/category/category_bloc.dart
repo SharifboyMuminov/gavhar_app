@@ -1,98 +1,72 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
 import 'package:gavhar_app/blocs/category/category_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/data/models/category/category_model.dart';
-import 'package:gavhar_app/utils/app_constans/app_constans.dart';
+import 'package:gavhar_app/data/models/network_respons/network_respons_model.dart';
+import 'package:gavhar_app/data/repositories/category_repository.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  CategoryBloc() : super(LoadingCategoryState()) {
+  CategoryBloc(this.categoryRepository) : super(LoadingCategoryState()) {
     on<CategoryCallEvent>(_callProduct);
     on<CategoryInsertEvent>(_insertProduct);
     on<CategoryDeleteEvent>(_deleteProduct);
     on<CategoryUpdateEvent>(_updateProduct);
   }
 
+  final CategoryRepository categoryRepository;
+
   Future<void> _callProduct(CategoryCallEvent event, emit) async {
     // debugPrint("asdfadsf");
     emit(LoadingCategoryState());
-    List<CategoryModel> categories = [];
+    NetworkResponse networkResponse = await categoryRepository.getCategories();
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.categoryTableName)
-          .get()
-          .then((value) {
-        categories =
-            value.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
-        // debugPrint("product --------${products}");
-      });
-      globalCategories = categories;
-      emit(SuccessCategoryState(categories: categories));
-    } on FirebaseException catch (_) {
-      emit(ErrorCategoryState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      emit(ErrorCategoryState(errorText: "catch (_)"));
+    if (networkResponse.errorText.isEmpty) {
+      globalCategories = networkResponse.data;
+
+      emit(SuccessCategoryState(
+          categories: networkResponse.data as List<CategoryModel>));
+    } else {
+      emit(ErrorCategoryState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _insertProduct(CategoryInsertEvent event, emit) async {
     emit(LoadingCategoryState());
 
-    try {
-      final cf = await FirebaseFirestore.instance
-          .collection(AppConst.categoryTableName)
-          .add(event.categoryModel.toJson());
-      await FirebaseFirestore.instance
-          .collection(AppConst.categoryTableName)
-          .doc(cf.id)
-          .update({"doc_id": cf.id});
+    NetworkResponse networkResponse =
+        await categoryRepository.insertCategory(event.categoryModel);
+
+    if (networkResponse.errorText.isEmpty) {
       add(CategoryCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorCategoryState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorCategoryState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorCategoryState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _deleteProduct(CategoryDeleteEvent event, emit) async {
     emit(LoadingCategoryState());
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.categoryTableName)
-          .doc(event.categoryModel.docId)
-          .delete();
+    NetworkResponse networkResponse =
+        await categoryRepository.deleteCategory(event.categoryModel);
 
+    if (networkResponse.errorText.isEmpty) {
       add(CategoryCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorCategoryState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorCategoryState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorCategoryState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _updateProduct(CategoryUpdateEvent event, emit) async {
     emit(LoadingCategoryState());
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.categoryTableName)
-          .doc(event.categoryModel.docId)
-          .update(event.categoryModel.toJson());
+    NetworkResponse networkResponse =
+        await categoryRepository.updateCategory(event.categoryModel);
 
+    if (networkResponse.errorText.isEmpty) {
       add(CategoryCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorCategoryState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorCategoryState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorCategoryState(errorText: networkResponse.errorText));
     }
   }
 }

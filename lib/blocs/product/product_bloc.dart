@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
-import 'package:gavhar_app/data/models/product/product_model.dart';
-import 'package:gavhar_app/utils/app_constans/app_constans.dart';
+import 'package:gavhar_app/data/models/network_respons/network_respons_model.dart';
+import 'package:gavhar_app/data/repositories/product_repository.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  ProductBloc() : super(LoadingProductState()) {
+  ProductBloc(this.productRepository) : super(LoadingProductState()) {
     on<ProductCallEvent>(_callProduct);
     on<ProductInsertEvent>(_insertProduct);
     on<ProductDeleteEvent>(_deleteProduct);
@@ -15,139 +14,84 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ProductGetForCategoryIdEvent>(_getProductForId);
   }
 
-  Future<void> _callProduct(ProductCallEvent event, emit) async {
-    // debugPrint("asdfadsf");
-    emit(LoadingProductState());
-    List<ProductModel> products = [];
+  final ProductRepository productRepository;
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .get()
-          .then((value) {
-        // debugPrint(value.toString());
-        try {
-          products =
-              value.docs.map((e) => ProductModel.fromJson(e.data())).toList();
-        } catch (error) {
-          // debugPrint("${error}----------");
-        }
-      });
-      emit(SuccessProductState(products: products));
-    } on FirebaseException catch (_) {
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      emit(ErrorProductState(errorText: "catch (_)"));
+  Future<void> _callProduct(ProductCallEvent event, emit) async {
+    emit(LoadingProductState());
+
+    NetworkResponse networkResponse = await productRepository.getProducts();
+
+    if (networkResponse.errorText.isEmpty) {
+      emit(SuccessProductState(products: networkResponse.data));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _insertProduct(ProductInsertEvent event, emit) async {
     emit(LoadingProductState());
 
-    try {
-      final cf = await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .add(event.productModel.toJson());
-      await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .doc(cf.id)
-          .update({"doc_id": cf.id});
+    NetworkResponse networkResponse =
+        await productRepository.insertProducts(event.productModel);
+
+    if (networkResponse.errorText.isEmpty) {
       add(ProductCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorProductState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _deleteProduct(ProductDeleteEvent event, emit) async {
     emit(LoadingProductState());
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .doc(event.productModel.docId)
-          .delete();
+    NetworkResponse networkResponse =
+        await productRepository.deleteProducts(event.productModel);
 
+    if (networkResponse.errorText.isEmpty) {
       add(ProductCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorProductState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _updateProduct(ProductUpdateEvent event, emit) async {
     emit(LoadingProductState());
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .doc(event.productModel.docId)
-          .update(event.productModel.toJson());
+    NetworkResponse networkResponse =
+        await productRepository.updateProducts(event.productModel);
 
+    if (networkResponse.errorText.isEmpty) {
       add(ProductCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorProductState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 
   _insertProductForList(ProductInsertForListEvent event, emit) async {
-    try {
-      for (int i = 0; i < event.productModels.length; i++) {
-        final cf = await FirebaseFirestore.instance
-            .collection(AppConst.productTableName)
-            .add(event.productModels[i].toJson());
-        await FirebaseFirestore.instance
-            .collection(AppConst.productTableName)
-            .doc(cf.id)
-            .update({"doc_id": cf.id});
-      }
+    emit(LoadingProductState());
 
+    NetworkResponse networkResponse =
+        await productRepository.insertProductForList(event.productModels);
+
+    if (networkResponse.errorText.isEmpty) {
       emit(ProductShowSnackBarState(text: 'Malumotlar qaytarildi :)'));
       add(ProductCallEvent());
-    } on FirebaseException catch (_) {
-      // debugPrint("Error insertProduct on FirebaseException catch (_)");
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (_) {
-      // debugPrint("Error insertProduct catch (_)");
-      emit(ErrorProductState(errorText: "catch (_)"));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 
   Future<void> _getProductForId(
       ProductGetForCategoryIdEvent event, emit) async {
     emit(LoadingProductState());
-    List<ProductModel> products = [];
 
-    try {
-      await FirebaseFirestore.instance
-          .collection(AppConst.productTableName)
-          .where("category_id",isEqualTo: event.categoryId)
-          .get()
-          .then((value) {
-            // debugPrint(value.toString());
-            try {
-              products = value.docs
-                  .map((e) => ProductModel.fromJson(e.data()))
-                  .toList();
-            } catch (error) {
-              // debugPrint("${error}----------");
-            }
-          });
-      emit(SuccessProductState(products: products));
-    } on FirebaseException catch (_) {
-      emit(ErrorProductState(errorText: "on FirebaseException catch (_)"));
-    } catch (error) {
-      emit(ErrorProductState(errorText: error.toString()));
+    NetworkResponse networkResponse =
+        await productRepository.getProductForId(event.categoryId);
+
+    if (networkResponse.errorText.isEmpty) {
+      emit(SuccessProductState(products: networkResponse.data));
+    } else {
+      emit(ErrorProductState(errorText: networkResponse.errorText));
     }
   }
 }

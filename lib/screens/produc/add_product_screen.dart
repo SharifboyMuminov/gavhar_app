@@ -258,6 +258,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   Future<void> _updateImages() async {
     List<String> imagePaths = [];
     if (xFileOne != null && xFileTwo != null) {
+      //TODO ERROR :)
       context
           .read<ImageCubit>()
           .deleteImage(path: widget.productModel!.storagePaths.first);
@@ -286,7 +287,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
               storagePaths: imagePaths.isNotEmpty
                   ? imagePaths
                   : widget.productModel!.storagePaths,
-              imageUrls: imagePaths.isEmpty
+              imageUrls: imagePaths.isNotEmpty
                   ? [urlImageOne, urlImageTwo]
                   : widget.productModel!.imageUrls,
             ),
