@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
@@ -35,7 +34,7 @@ class ProductItem extends StatelessWidget {
       child: Hero(
         tag: productModel.docId,
         child: CachedNetworkImage(
-          imageUrl: productModel.imageUrl,
+          imageUrl: productModel.imageUrls.first,
           imageBuilder: (context, imageProvider) {
             return Container(
               decoration: BoxDecoration(

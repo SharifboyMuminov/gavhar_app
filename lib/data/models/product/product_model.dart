@@ -1,46 +1,53 @@
 class ProductModel {
   final String categoryId;
   final String docId;
-  final String imageUrl;
+  final List<String> imageUrls;
   final String nameProduct;
   final num price;
   final String gender;
   final String description;
-  final String storagePath;
+  final List<String> storagePaths;
 
   ProductModel({
-    required this.storagePath,
+    required this.storagePaths,
     required this.description,
     required this.gender,
     required this.nameProduct,
     required this.categoryId,
     required this.docId,
-    required this.imageUrl,
+    required this.imageUrls,
     required this.price,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
+    List<String> imageUrls = [];
+    List<String> imagePaths = [];
+    imageUrls.add((json['image_urls'] as List? ?? []).first);
+    imageUrls.add((json['image_urls'] as List? ?? []).last);
+
+    imagePaths.add((json['storage_paths'] as List? ?? []).first);
+    imagePaths.add((json['storage_paths'] as List? ?? []).last);
+
     return ProductModel(
       description: json["description"] as String? ?? "",
       gender: json["gender"] as String? ?? "",
       nameProduct: json["name_product"] as String? ?? "",
       categoryId: json['category_id'] as String? ?? "",
       docId: json['doc_id'] as String? ?? "",
-      imageUrl: json['image_url'] as String? ?? "",
+      imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
-      storagePath: json['storage_path'] as String? ?? "",
+      storagePaths: imagePaths,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'storage_path': storagePath,
+      'storage_paths': storagePaths,
       "description": description,
       'category_id': categoryId,
-      'gender': gender,
       'name_product': nameProduct,
       'doc_id': docId,
-      'image_url': imageUrl,
+      'image_urls': imageUrls,
       'price': price,
     };
   }
@@ -64,33 +71,32 @@ class ProductModel {
       nameProduct: "",
       categoryId: "",
       docId: "",
-      imageUrl:
-          "https://cdn-images.farfetch-contents.com/16/66/24/93/16662493_32708057_1000.jpg",
+      imageUrls: [],
       price: 0,
-      storagePath: '',
+      storagePaths: [],
     );
   }
 
   ProductModel copyWith({
     String? categoryId,
     String? docId,
-    String? imageUrl,
+    List<String>? imageUrls,
     num? price,
     String? gender,
     String? nameProduct,
     String? description,
     String? emailReques,
-    String? storagePath,
+    List<String>? storagePaths,
   }) {
     return ProductModel(
       description: description ?? this.description,
       categoryId: categoryId ?? this.categoryId,
       docId: docId ?? this.docId,
-      imageUrl: imageUrl ?? this.imageUrl,
+      imageUrls: imageUrls ?? this.imageUrls,
       price: price ?? this.price,
       nameProduct: nameProduct ?? this.nameProduct,
       gender: gender ?? this.gender,
-      storagePath: storagePath ?? this.storagePath,
+      storagePaths: storagePaths ?? this.storagePaths,
     );
   }
 }

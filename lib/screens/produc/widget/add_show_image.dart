@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
 class ShowImageForAdd extends StatelessWidget {
@@ -9,11 +8,13 @@ class ShowImageForAdd extends StatelessWidget {
     required this.imageProvider,
     required this.onTab,
     required this.showSetImage,
+    this.isRight = true,
   });
 
   final ImageProvider<Object> imageProvider;
   final VoidCallback onTab;
   final bool showSetImage;
+  final bool isRight;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,9 @@ class ShowImageForAdd extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
-              blurRadius: 40,
+              blurRadius: 20,
               spreadRadius: 5,
-              offset: const Offset(0, 10),
+              offset: Offset(isRight ? -4 : 4, 10),
             ),
           ],
         ),

@@ -35,8 +35,10 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   TextEditingController controllerDescription = TextEditingController();
   CategoryModel? currentCategoryModel;
 
-  File? imageFile;
-  XFile? xFile;
+  File? imageFileOne;
+  XFile? xFileOne;
+  File? imageFileTwo;
+  XFile? xFileTwo;
 
   bool isEdit = false;
 
@@ -103,42 +105,45 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
                   Row(
                     children: [
                       ShowImageForAdd(
-                          imageProvider: isEdit && xFile == null
-                              ? NetworkImage(widget.productModel!.imageUrl)
-                              : xFile == null
+                          imageProvider: isEdit && xFileOne == null
+                              ? NetworkImage(
+                                  widget.productModel!.imageUrls.first)
+                              : xFileOne == null
                                   ? const AssetImage(AppConst.inputImage)
-                                  : FileImage(imageFile!)
+                                  : FileImage(imageFileOne!)
                                       as ImageProvider<Object>,
                           onTab: () {
                             showImageDialog(
                               context,
                               onChaneXFile: (ChangeImage changeImage) {
-                                xFile = changeImage.xFile;
-                                imageFile = File(changeImage.xFile!.path);
+                                xFileOne = changeImage.xFile;
+                                imageFileOne = File(changeImage.xFile!.path);
                                 setState(() {});
                               },
                             );
                           },
-                          showSetImage: xFile == null || !isEdit),
+                          showSetImage: xFileOne != null || isEdit),
                       SizedBox(width: 10.we),
                       ShowImageForAdd(
-                          imageProvider: isEdit && xFile == null
-                              ? NetworkImage(widget.productModel!.imageUrl)
-                              : xFile == null
+                          isRight: false,
+                          imageProvider: isEdit && xFileTwo == null
+                              ? NetworkImage(
+                                  widget.productModel!.imageUrls.last)
+                              : xFileTwo == null
                                   ? const AssetImage(AppConst.inputImage)
-                                  : FileImage(imageFile!)
+                                  : FileImage(imageFileTwo!)
                                       as ImageProvider<Object>,
                           onTab: () {
                             showImageDialog(
                               context,
                               onChaneXFile: (ChangeImage changeImage) {
-                                xFile = changeImage.xFile;
-                                imageFile = File(changeImage.xFile!.path);
+                                xFileTwo = changeImage.xFile;
+                                imageFileTwo = File(changeImage.xFile!.path);
                                 setState(() {});
                               },
                             );
                           },
-                          showSetImage: xFile == null || !isEdit),
+                          showSetImage: xFileTwo != null || isEdit),
                     ],
                   ),
                   SizedBox(height: 15.he),
@@ -195,89 +200,39 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
                     ).toList(),
                   ),
                   SizedBox(height: 20.he),
-                  // DropdownMenu<String>(
-                  //   selectedTrailingIcon: Icon(
-                  //     Icons.check,
-                  //     size: 18.sp,
-                  //     color: Colors.black,
-                  //   ),
-                  //   label: Text(
-                  //     "Gender",
-                  //     style: TextStyle(
-                  //       color: Colors.black,
-                  //       fontSize: 18.sp,
-                  //       fontWeight: FontWeight.w600,
-                  //     ),
-                  //   ),
-                  //   width: width - 50,
-                  //   initialSelection: textGender,
-                  //   onSelected: (String? value) {
-                  //     // This is called when the user selects an item.
-                  //     setState(
-                  //       () {
-                  //         textGender = value!;
-                  //       },
-                  //     );
-                  //   },
-                  //   dropdownMenuEntries:
-                  //       listGender.map<DropdownMenuEntry<String>>(
-                  //     (String value) {
-                  //       return DropdownMenuEntry<String>(
-                  //           value: value, label: value);
-                  //     },
-                  //   ).toList(),
-                  // ),
                 ],
               ),
             ),
     );
   }
 
+  String urlImageOne = "";
+  String urlImageTwo = "";
+
   _saveProductOrUpdate() async {
     if (_testInout()) {
-      String urlImage = "";
-
       if (isEdit) {
-        bool setImage = xFile != null;
-        if (xFile != null) {
-          context
-              .read<ImageCubit>()
-              .deleteImage(path: widget.productModel!.storagePath);
-          urlImage = await context.read<ImageCubit>().addImageInFireBase(
-              file: imageFile!, fileName: "product_image/${xFile!.name}");
-        }
-        if (!context.mounted) return;
-        context.read<ProductBloc>().add(
-              ProductUpdateEvent(
-                productModel: widget.productModel!.copyWith(
-                  price: num.parse(controllerPrice.text),
-                  categoryId: currentCategoryModel!.docId,
-                  nameProduct: controllerName.text,
-                  description: controllerDescription.text,
-                  gender: textGender,
-                  storagePath: setImage
-                      ? "product_image/${xFile!.name}"
-                      : widget.productModel!.storagePath,
-                  imageUrl: setImage ? urlImage : widget.productModel!.imageUrl,
-                ),
-              ),
-            );
-        Navigator.pop(context);
+        _updateImages();
       } else {
-        urlImage = await context.read<ImageCubit>().addImageInFireBase(
-            file: imageFile!, fileName: "product_image/${xFile!.name}");
+        urlImageOne = await context.read<ImageCubit>().addImageInFireBase(
+            file: imageFileOne!, fileName: "product_image/${xFileOne!.name}");
+        urlImageTwo = await context.read<ImageCubit>().addImageInFireBase(
+            file: imageFileOne!, fileName: "product_image/${xFileTwo!.name}");
 
         context.read<ProductBloc>().add(
               ProductInsertEvent(
                 productModel: ProductModel(
-                  storagePath: "product_image/${xFile!.name}",
+                  storagePaths: [
+                    "product_image/${xFileOne!.name}",
+                    "product_image/${xFileTwo!.name}"
+                  ],
                   price: num.parse(controllerPrice.text),
                   categoryId: currentCategoryModel!.docId,
                   nameProduct: controllerName.text,
                   description: controllerDescription.text,
                   gender: textGender,
                   docId: "",
-                  imageUrl: urlImage,
+                  imageUrls: [urlImageOne, urlImageTwo],
                 ),
               ),
             );
@@ -300,11 +255,54 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
     }
   }
 
+  Future<void> _updateImages() async {
+    List<String> imagePaths = [];
+    if (xFileOne != null && xFileTwo != null) {
+      context
+          .read<ImageCubit>()
+          .deleteImage(path: widget.productModel!.storagePaths.first);
+      context
+          .read<ImageCubit>()
+          .deleteImage(path: widget.productModel!.storagePaths.last);
+
+      urlImageOne = await context.read<ImageCubit>().addImageInFireBase(
+          file: imageFileOne!, fileName: "product_image/${xFileOne!.name}");
+      urlImageTwo = await context.read<ImageCubit>().addImageInFireBase(
+          file: imageFileOne!, fileName: "product_image/${xFileTwo!.name}");
+      imagePaths = [
+        "product_image/${xFileOne!.name}",
+        "product_image/${xFileTwo!.name}",
+      ];
+    }
+    if (!context.mounted) return;
+    context.read<ProductBloc>().add(
+          ProductUpdateEvent(
+            productModel: widget.productModel!.copyWith(
+              price: num.parse(controllerPrice.text),
+              categoryId: currentCategoryModel!.docId,
+              nameProduct: controllerName.text,
+              description: controllerDescription.text,
+              gender: textGender,
+              storagePaths: imagePaths.isNotEmpty
+                  ? imagePaths
+                  : widget.productModel!.storagePaths,
+              imageUrls: imagePaths.isEmpty
+                  ? [urlImageOne, urlImageTwo]
+                  : widget.productModel!.imageUrls,
+            ),
+          ),
+        );
+    Navigator.pop(context);
+  }
+
   bool _testInout() {
     if (isEdit) {
       return _testTExtInput() && currentCategoryModel != null;
     }
-    return _testTExtInput() && currentCategoryModel != null && xFile != null;
+    return _testTExtInput() &&
+        currentCategoryModel != null &&
+        xFileOne != null &&
+        xFileTwo != null;
   }
 
   bool _testTExtInput() {
@@ -321,3 +319,36 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
     super.deactivate();
   }
 }
+
+// DropdownMenu<String>(
+//   selectedTrailingIcon: Icon(
+//     Icons.check,
+//     size: 18.sp,
+//     color: Colors.black,
+//   ),
+//   label: Text(
+//     "Gender",
+//     style: TextStyle(
+//       color: Colors.black,
+//       fontSize: 18.sp,
+//       fontWeight: FontWeight.w600,
+//     ),
+//   ),
+//   width: width - 50,
+//   initialSelection: textGender,
+//   onSelected: (String? value) {
+//     // This is called when the user selects an item.
+//     setState(
+//       () {
+//         textGender = value!;
+//       },
+//     );
+//   },
+//   dropdownMenuEntries:
+//       listGender.map<DropdownMenuEntry<String>>(
+//     (String value) {
+//       return DropdownMenuEntry<String>(
+//           value: value, label: value);
+//     },
+//   ).toList(),
+// ),

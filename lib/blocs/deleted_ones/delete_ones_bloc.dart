@@ -85,7 +85,9 @@ class DeletedOnesBloc extends Bloc<DeletedOnesEvent, DeletedOnesState> {
       for (int i = 0; i < event.productModels.length; i++) {
         if (event.delete_image) {
           await imageCubit.deleteImage(
-              path: event.productModels[i].storagePath);
+              path: event.productModels[i].storagePaths.first);
+          await imageCubit.deleteImage(
+              path: event.productModels[i].storagePaths.last);
         }
         await FirebaseFirestore.instance
             .collection(AppConst.productDeletedOnesTableName)

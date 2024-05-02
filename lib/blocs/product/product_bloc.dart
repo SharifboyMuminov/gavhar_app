@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
@@ -24,9 +25,14 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           .collection(AppConst.productTableName)
           .get()
           .then((value) {
-        products =
-            value.docs.map((e) => ProductModel.fromJson(e.data())).toList();
-        // debugPrint("product --------${products}");
+        // debugPrint(value.toString());
+        try{
+          products =
+              value.docs.map((e) => ProductModel.fromJson(e.data())).toList();
+        }catch (error){
+          debugPrint("${error}----------");
+
+        }
       });
       emit(SuccessProductState(products: products));
     } on FirebaseException catch (_) {

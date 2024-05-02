@@ -21,7 +21,7 @@ class ShowImage extends StatelessWidget {
             tag: productModel.docId,
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: productModel.imageUrl,
+              imageUrl: productModel.imageUrls.first,
               placeholder: (context, url) =>
                   const CircularProgressIndicator.adaptive(),
               errorWidget: (context, url, error) {
