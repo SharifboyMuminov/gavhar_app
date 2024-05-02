@@ -1,7 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,13 +6,11 @@ import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
 import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
-import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/show_image.dart';
 import 'package:gavhar_app/screens/widgets/dialog/ask_dialog.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
-import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,6 +28,7 @@ class InfoScreen extends StatefulWidget {
 
 class _InfoScreenState extends State<InfoScreen> {
   late ProductModel productModel;
+  int activeImage = 0;
 
   @override
   void initState() {
@@ -106,12 +102,41 @@ class _InfoScreenState extends State<InfoScreen> {
                     child: Stack(
                       children: [
                         PageView(
+                          onPageChanged: (v) {
+                            activeImage = v;
+                            setState(() {});
+                          },
                           children: [
                             ShowImage(productModel: productModel),
                             ShowImage(
                                 productModel: productModel,
                                 isChangeImage: true),
                           ],
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ...List.generate(
+                                productModel.imageUrls.length,
+                                (index) {
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 15.he, horizontal: 5.we),
+                                    height: 10.we,
+                                    width: 10.we,
+                                    decoration: BoxDecoration(
+                                      color: activeImage == index
+                                          ? Colors.white
+                                          : Colors.white38,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
