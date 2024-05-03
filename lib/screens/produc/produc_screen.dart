@@ -41,7 +41,7 @@ class _ProductScreenState extends State<ProductScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const AddAndUpdateScreen();
+                    return const AddProductScreen();
                   },
                 ),
               ).then((value) {
@@ -69,10 +69,11 @@ class _ProductScreenState extends State<ProductScreen> {
           if (state is SuccessProductState) {
             if (state.products.isEmpty) {
               return Center(
-                  child: Image.asset(
-                AppConst.emptyData,
-                width: 250.we,
-              ));
+                child: Image.asset(
+                  AppConst.emptyData,
+                  fit: BoxFit.cover,
+                ),
+              );
             }
             return Stack(
               children: [

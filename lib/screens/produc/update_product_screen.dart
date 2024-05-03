@@ -13,19 +13,20 @@ import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/produc/widget/add_show_image.dart';
 import 'package:gavhar_app/screens/widgets/dialog/image_dialog.dart';
 import 'package:gavhar_app/screens/widgets/my_input_widget.dart';
-import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+class UpdateProductScreen extends StatefulWidget {
+  const UpdateProductScreen({super.key, required this.productModel});
+
+  final ProductModel productModel;
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<UpdateProductScreen> createState() => _UpdateProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _UpdateProductScreenState extends State<UpdateProductScreen> {
   String textGender = "Universal";
   List<String> listGender = ["Men", "Women", "Universal"];
   TextEditingController controllerName = TextEditingController();
@@ -37,6 +38,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
   XFile? xFileOne;
   File? imageFileTwo;
   XFile? xFileTwo;
+
+  @override
+  void initState() {
+    // debugPrint("Makkami");
+    controllerDescription.text = widget.productModel.description;
+    controllerPrice.text = widget.productModel.price.toString();
+    controllerName.text = widget.productModel.nameProduct;
+    textGender = widget.productModel.gender;
+    var a = globalCategories
+        .where((element) => element.docId == widget.productModel.categoryId)
+        .toList();
+    currentCategoryModel = a.last;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +100,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     children: [
                       ShowImageForAdd(
                           imageProvider: xFileOne == null
-                              ? const AssetImage(AppConst.inputImage)
+                              ? NetworkImage(
+                                  widget.productModel.imageUrls.first)
                               : FileImage(imageFileOne!)
                                   as ImageProvider<Object>,
                           onTab: () {
@@ -98,12 +114,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               },
                             );
                           },
-                          showSetImage: xFileOne != null),
+                          showSetImage: true),
                       SizedBox(width: 10.we),
                       ShowImageForAdd(
                           isRight: false,
                           imageProvider: xFileTwo == null
-                              ? const AssetImage(AppConst.inputImage)
+                              ? NetworkImage(widget.productModel.imageUrls.last)
                               : FileImage(imageFileTwo!)
                                   as ImageProvider<Object>,
                           onTab: () {
@@ -116,7 +132,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               },
                             );
                           },
-                          showSetImage: xFileTwo != null),
+                          showSetImage: true),
                     ],
                   ),
                   SizedBox(height: 15.he),
@@ -180,32 +196,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   _saveProductOrUpdate() async {
-    if (_testTExtInput()) {
-      String urlImageOne = "";
-      String urlImageTwo = "";
-      urlImageOne = await context.read<ImageCubit>().addImageInFireBase(
-          file: imageFileOne!, fileName: "product_image/${xFileOne!.name}");
-      urlImageTwo = await context.read<ImageCubit>().addImageInFireBase(
-          file: imageFileTwo!, fileName: "product_image/${xFileTwo!.name}");
-
-      context.read<ProductBloc>().add(
-            ProductInsertEvent(
-              productModel: ProductModel(
-                storagePaths: [
-                  "product_image/${xFileOne!.name}",
-                  "product_image/${xFileTwo!.name}"
-                ],
-                price: num.parse(controllerPrice.text),
-                categoryId: currentCategoryModel!.docId,
-                nameProduct: controllerName.text,
-                description: controllerDescription.text,
-                gender: textGender,
-                docId: "",
-                imageUrls: [urlImageOne, urlImageTwo],
-              ),
-            ),
-          );
-      Navigator.pop(context);
+    if (_testInout()) {
+      _updateImages();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -223,13 +215,65 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
+  Future<void> _updateImages() async {
+    List<String> imagePaths = widget.productModel.storagePaths;
+    List<String> imageUrls = widget.productModel.imageUrls;
+
+    if (xFileOne != null) {
+      String urlImageOne = "";
+      context
+          .read<ImageCubit>()
+          .deleteImage(path: widget.productModel.storagePaths.first);
+      urlImageOne = await context.read<ImageCubit>().addImageInFireBase(
+          file: imageFileOne!, fileName: "product_image/${xFileOne!.name}");
+      imagePaths.remove(widget.productModel.storagePaths.first);
+      imageUrls.remove(widget.productModel.imageUrls.first);
+
+      imagePaths.insert(0, "product_image/${xFileOne!.name}");
+      imageUrls.insert(0, urlImageOne);
+    }
+
+    if (xFileTwo != null) {
+      String urlImageTwo = "";
+
+      context
+          .read<ImageCubit>()
+          .deleteImage(path: widget.productModel.storagePaths.last);
+      urlImageTwo = await context.read<ImageCubit>().addImageInFireBase(
+          file: imageFileTwo!, fileName: "product_image/${xFileTwo!.name}");
+      imagePaths.remove(widget.productModel.storagePaths.last);
+      imageUrls.remove(widget.productModel.imageUrls.last);
+
+      imagePaths.add("product_image/${xFileTwo!.name}");
+      imageUrls.add(urlImageTwo);
+    }
+
+    if (!context.mounted) return;
+    context.read<ProductBloc>().add(
+          ProductUpdateEvent(
+            productModel: widget.productModel.copyWith(
+              price: num.parse(controllerPrice.text),
+              categoryId: currentCategoryModel!.docId,
+              nameProduct: controllerName.text,
+              description: controllerDescription.text,
+              gender: textGender,
+              storagePaths: imagePaths,
+              imageUrls: imageUrls,
+            ),
+          ),
+        );
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  bool _testInout() {
+    return _testTExtInput() && currentCategoryModel != null;
+  }
+
   bool _testTExtInput() {
     return controllerName.text.isNotEmpty &&
         controllerDescription.text.isNotEmpty &&
-        controllerPrice.text.isNotEmpty &&
-        currentCategoryModel != null &&
-        xFileOne != null &&
-        xFileTwo != null;
+        controllerPrice.text.isNotEmpty;
   }
 
   @override
@@ -240,36 +284,3 @@ class _AddProductScreenState extends State<AddProductScreen> {
     super.deactivate();
   }
 }
-
-// DropdownMenu<String>(
-//   selectedTrailingIcon: Icon(
-//     Icons.check,
-//     size: 18.sp,
-//     color: Colors.black,
-//   ),
-//   label: Text(
-//     "Gender",
-//     style: TextStyle(
-//       color: Colors.black,
-//       fontSize: 18.sp,
-//       fontWeight: FontWeight.w600,
-//     ),
-//   ),
-//   width: width - 50,
-//   initialSelection: textGender,
-//   onSelected: (String? value) {
-//     // This is called when the user selects an item.
-//     setState(
-//       () {
-//         textGender = value!;
-//       },
-//     );
-//   },
-//   dropdownMenuEntries:
-//       listGender.map<DropdownMenuEntry<String>>(
-//     (String value) {
-//       return DropdownMenuEntry<String>(
-//           value: value, label: value);
-//     },
-//   ).toList(),
-// ),

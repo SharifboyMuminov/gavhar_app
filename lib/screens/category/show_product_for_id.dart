@@ -14,7 +14,8 @@ class ShowProductForCategoryId extends StatefulWidget {
   const ShowProductForCategoryId({super.key});
 
   @override
-  State<ShowProductForCategoryId> createState() => _ShowProductForCategoryIdState();
+  State<ShowProductForCategoryId> createState() =>
+      _ShowProductForCategoryIdState();
 }
 
 class _ShowProductForCategoryIdState extends State<ShowProductForCategoryId> {
@@ -69,10 +70,11 @@ class _ShowProductForCategoryIdState extends State<ShowProductForCategoryId> {
           if (state is SuccessProductState) {
             if (state.products.isEmpty) {
               return Center(
-                  child: Image.asset(
-                    AppConst.emptyData,
-                    width: 250.we,
-                  ));
+                child: Image.asset(
+                  AppConst.emptyData,
+                  fit: BoxFit.cover,
+                ),
+              );
             }
             return GridView.builder(
               padding: EdgeInsets.only(
@@ -83,8 +85,8 @@ class _ShowProductForCategoryIdState extends State<ShowProductForCategoryId> {
                   mainAxisSpacing: 20.he,
                   crossAxisSpacing: 15.we,
                   childAspectRatio: 0.75
-                // mainAxisExtent: 1
-              ),
+                  // mainAxisExtent: 1
+                  ),
               itemBuilder: (BuildContext context, int index) {
                 return ProductItem(
                   productModel: state.products[index],

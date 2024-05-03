@@ -83,7 +83,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
               return Center(
                   child: Image.asset(
                 AppConst.emptyData,
-                width: 250.we,
+                fit: BoxFit.cover,
               ));
             }
 
@@ -138,6 +138,12 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
   _deleteProduct({bool delete_image = true}) {
     context.read<DeletedOnesBloc>().add(DeletedOnesDeleteListEvent(
         productModels: clickProducts, delete_image: delete_image));
+    _releaseProduct();
+  }
+
+  _releaseProduct() {
+    clickProducts = [];
+    setState(() {});
   }
 
   _insertProducts() {
@@ -151,5 +157,6 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
           .read<ProductBloc>()
           .add(ProductInsertForListEvent(productModels: clickProducts));
     }
+    _releaseProduct();
   }
 }

@@ -1,8 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
@@ -12,7 +9,6 @@ import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/category/show_product_for_id.dart';
-import 'package:gavhar_app/screens/produc/produc_screen.dart';
 import 'package:gavhar_app/screens/category/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -76,7 +72,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               return Center(
                   child: Image.asset(
                 AppConst.emptyData,
-                width: 250.we,
+                fit: BoxFit.cover,
               ));
             }
             return Stack(
@@ -119,7 +115,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           );
                         },
                         onPressed: () {
-                          debugPrint(state.categories[index].docId+"----------");
+                          // debugPrint(state.categories[index].docId+"----------");
                           context.read<ProductBloc>().add(
                                 ProductGetForCategoryIdEvent(
                                   categoryId: state.categories[index].docId,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +7,7 @@ import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
-import 'package:gavhar_app/screens/produc/add_product_screen.dart';
+import 'package:gavhar_app/screens/produc/update_product_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/show_image.dart';
 import 'package:gavhar_app/screens/widgets/dialog/ask_dialog.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
@@ -81,7 +80,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return AddAndUpdateScreen(
+                        return UpdateProductScreen(
                           productModel: productModel,
                         );
                       },
