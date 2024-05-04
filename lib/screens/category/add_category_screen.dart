@@ -78,7 +78,7 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
                       categoryModel: widget.categoryModel!));
                   Navigator.pop(context);
                   Navigator.pop(context);
-                });
+                }, title: 'Do you want to reduce the information?');
               },
               icon: Icon(
                 Icons.delete,

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-showAskDialog(BuildContext context, {required VoidCallback onTabOk}) {
+showAskDialog(BuildContext context, {required String title,required VoidCallback onTabOk}) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog.adaptive(
           title: Text(
-            "Do you want to reduce the information?",
+            title,
             style: TextStyle(color: Colors.black, fontSize: 20.sp),
           ),
           actions: [

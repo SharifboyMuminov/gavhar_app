@@ -11,6 +11,8 @@ import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
+import '../widgets/dialog/ask_dialog.dart';
+
 class DeletedOnesScreen extends StatefulWidget {
   const DeletedOnesScreen({super.key});
 
@@ -37,7 +39,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
         actions: [
           if (clickProducts.isNotEmpty)
             IconButton(
-              onPressed: _insertProducts,
+              onPressed: _showDialogReturn,
               icon: Icon(
                 Icons.replay,
                 color: Colors.black,
@@ -46,7 +48,7 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
             ),
           if (clickProducts.isNotEmpty)
             IconButton(
-              onPressed: _deleteProduct,
+              onPressed: _showDialogDelete,
               icon: Icon(
                 Icons.delete,
                 color: Colors.redAccent,
@@ -147,16 +149,26 @@ class _DeletedOnesScreenState extends State<DeletedOnesScreen> {
   }
 
   _insertProducts() {
+    context
+        .read<ProductBloc>()
+        .add(ProductInsertForListEvent(productModels: clickProducts));
     _deleteProduct(delete_image: false);
-    if (clickProducts.length == 1) {
-      context
-          .read<ProductBloc>()
-          .add(ProductInsertEvent(productModel: clickProducts[0]));
-    } else {
-      context
-          .read<ProductBloc>()
-          .add(ProductInsertForListEvent(productModels: clickProducts));
-    }
     _releaseProduct();
+  }
+
+  _showDialogDelete() {
+    showAskDialog(context, title: 'Do you want to reduce the information(s)?',
+        onTabOk: () {
+      _deleteProduct();
+      Navigator.pop(context);
+    });
+  }
+
+  _showDialogReturn() {
+    showAskDialog(context, title: 'Do you want to return the information(s)?',
+        onTabOk: () {
+      _insertProducts();
+      Navigator.pop(context);
+    });
   }
 }

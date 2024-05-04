@@ -66,7 +66,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         .add(ProductDeleteEvent(productModel: productModel));
                     Navigator.pop(context);
                     Navigator.pop(context);
-                  });
+                  }, title: "Do you want to reduce the information?");
                 },
                 icon: Icon(
                   Icons.delete,
