@@ -28,57 +28,6 @@ class CategoryRepository {
     return networkResponse;
   }
 
-  Future<NetworkResponse> insertCategory(CategoryModel categoryModel) async {
-    NetworkResponse networkResponse = NetworkResponse();
 
-    try {
-      final cf = await fireBaseData
-          .collection(AppConst.categoryTableName)
-          .add(categoryModel.toJson());
-      await fireBaseData
-          .collection(AppConst.categoryTableName)
-          .doc(cf.id)
-          .update({"doc_id": cf.id});
-    } on FirebaseException catch (_) {
-      networkResponse.errorText = "on FirebaseException catch (_)";
-    } catch (_) {
-      networkResponse.errorText = "catch (_)";
-    }
 
-    return networkResponse;
-  }
-
-  Future<NetworkResponse> updateCategory(CategoryModel categoryModel) async {
-    NetworkResponse networkResponse = NetworkResponse();
-
-    try {
-      await fireBaseData
-          .collection(AppConst.categoryTableName)
-          .doc(categoryModel.docId)
-          .update(categoryModel.toJson());
-    } on FirebaseException catch (_) {
-      networkResponse.errorText = "on FirebaseException catch (_)";
-    } catch (_) {
-      networkResponse.errorText = "catch (_)";
-    }
-
-    return networkResponse;
-  }
-
-  Future<NetworkResponse> deleteCategory(CategoryModel categoryModel) async {
-    NetworkResponse networkResponse = NetworkResponse();
-
-    try {
-      await fireBaseData
-          .collection(AppConst.categoryTableName)
-          .doc(categoryModel.docId)
-          .delete();
-    } on FirebaseException catch (_) {
-      networkResponse.errorText = "on FirebaseException catch (_)";
-    } catch (_) {
-      networkResponse.errorText = "catch (_)";
-    }
-
-    return networkResponse;
-  }
 }

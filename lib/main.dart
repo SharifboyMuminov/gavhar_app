@@ -4,11 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
-import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
-import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
-import 'package:gavhar_app/cubits/image/image_cubit.dart';
 import 'package:gavhar_app/data/repositories/category_repository.dart';
 import 'package:gavhar_app/data/repositories/product_repository.dart';
 import 'package:gavhar_app/server/firebase_options.dart';
@@ -22,11 +19,12 @@ Future<void> main(List<String> args) async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => ProductBloc(ProductRepository())..add(ProductCallEvent())),
-        BlocProvider(create: (_) => ImageCubit()),
-        BlocProvider(create: (_) => CategoryBloc(CategoryRepository())..add(CategoryCallEvent())),
         BlocProvider(
-            create: (_) => DeletedOnesBloc()..add(DeletedOnesCallEvent())),
+            create: (_) =>
+                ProductBloc(ProductRepository())..add(ProductCallEvent())),
+        BlocProvider(
+            create: (_) =>
+                CategoryBloc(CategoryRepository())..add(CategoryCallEvent())),
       ],
       child: const MyApp(),
     ),

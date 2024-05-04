@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gavhar_app/blocs/deleted_ones/delete_ones_bloc.dart';
-import 'package:gavhar_app/blocs/deleted_ones/deleted_ones_event.dart';
-import 'package:gavhar_app/blocs/product/product_bloc.dart';
-import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
-import 'package:gavhar_app/screens/produc/update_product_screen.dart';
 import 'package:gavhar_app/screens/produc/widget/show_image.dart';
-import 'package:gavhar_app/screens/widgets/dialog/ask_dialog.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/platforma.dart';
 import 'package:gavhar_app/utils/size_app.dart';
@@ -55,44 +48,6 @@ class _InfoScreenState extends State<InfoScreen> {
                 size: 25.sp,
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  showAskDialog(context, onTabOk: () {
-                    context.read<DeletedOnesBloc>().add(
-                        DeletedOnesInsertEvent(productModel: productModel));
-                    context
-                        .read<ProductBloc>()
-                        .add(ProductDeleteEvent(productModel: productModel));
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  }, title: "Do you want to reduce the information?");
-                },
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.redAccent,
-                  size: 25.sp,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return UpdateProductScreen(
-                          productModel: productModel,
-                        );
-                      },
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.edit,
-                  size: 25.sp,
-                ),
-              ),
-            ],
             expandedHeight: 400.he,
             flexibleSpace: FlexibleSpaceBar(
               background: Column(

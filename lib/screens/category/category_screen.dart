@@ -7,7 +7,6 @@ import 'package:gavhar_app/blocs/category/category_state.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
-import 'package:gavhar_app/screens/category/add_category_screen.dart';
 import 'package:gavhar_app/screens/category/show_product_for_id.dart';
 import 'package:gavhar_app/screens/category/widget/stagger_mygrid.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
@@ -34,30 +33,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              globalAnimationController.reverse();
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const AddCategoryScreen();
-                  },
-                ),
-              ).then((value) {
-                globalAnimationController.forward();
-              });
-            },
-            icon: Icon(
-              Icons.add,
-              size: 25.sp,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(width: 10.we),
-        ],
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (BuildContext context, CategoryState state) {
@@ -102,19 +77,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.r)),
                         ),
-                        onLongPress: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AddCategoryScreen(
-                                    categoryModel: state.categories[index]);
-                                //
-                              },
-                            ),
-                          );
-                        },
                         onPressed: () {
+                          globalAnimationController.reverse();
+
                           // debugPrint(state.categories[index].docId+"----------");
                           context.read<ProductBloc>().add(
                                 ProductGetForCategoryIdEvent(
@@ -130,6 +95,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ),
                           ).then((value) {
                             context.read<ProductBloc>().add(ProductCallEvent());
+                            globalAnimationController.forward();
                           });
                         },
                         child: Stack(

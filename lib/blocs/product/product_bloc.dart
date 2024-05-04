@@ -7,11 +7,6 @@ import 'package:gavhar_app/data/repositories/product_repository.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this.productRepository) : super(LoadingProductState()) {
     on<ProductCallEvent>(_callProduct);
-    on<ProductInsertEvent>(_insertProduct);
-    on<ProductDeleteEvent>(_deleteProduct);
-    on<ProductUpdateEvent>(_updateProduct);
-    on<ProductInsertForListEvent>(_insertProductForList);
-    on<ProductGetForCategoryIdEvent>(_getProductForId);
   }
 
   final ProductRepository productRepository;
@@ -23,59 +18,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     if (networkResponse.errorText.isEmpty) {
       emit(SuccessProductState(products: networkResponse.data));
-    } else {
-      emit(ErrorProductState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _insertProduct(ProductInsertEvent event, emit) async {
-    emit(LoadingProductState());
-
-    NetworkResponse networkResponse =
-        await productRepository.insertProducts(event.productModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(ProductCallEvent());
-    } else {
-      emit(ErrorProductState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _deleteProduct(ProductDeleteEvent event, emit) async {
-    emit(LoadingProductState());
-
-    NetworkResponse networkResponse =
-        await productRepository.deleteProducts(event.productModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(ProductCallEvent());
-    } else {
-      emit(ErrorProductState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _updateProduct(ProductUpdateEvent event, emit) async {
-    emit(LoadingProductState());
-
-    NetworkResponse networkResponse =
-        await productRepository.updateProducts(event.productModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(ProductCallEvent());
-    } else {
-      emit(ErrorProductState(errorText: networkResponse.errorText));
-    }
-  }
-
-  _insertProductForList(ProductInsertForListEvent event, emit) async {
-    emit(LoadingProductState());
-
-    NetworkResponse networkResponse =
-        await productRepository.insertProductForList(event.productModels);
-
-    if (networkResponse.errorText.isEmpty) {
-      emit(ProductShowSnackBarState(text: 'Malumotlar qaytarildi :)'));
-      add(ProductCallEvent());
     } else {
       emit(ErrorProductState(errorText: networkResponse.errorText));
     }

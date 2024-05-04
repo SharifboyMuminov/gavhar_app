@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/category/category_screen.dart';
-import 'package:gavhar_app/screens/deleted_ones/deleted_ones_screen.dart';
+import 'package:gavhar_app/screens/home/home_screen.dart';
 import 'package:gavhar_app/screens/produc/produc_screen.dart';
 import 'package:gavhar_app/screens/tab_box/cubits/tab_box_cubit.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
@@ -23,7 +23,7 @@ class _TabScreenState extends State<TabScreen>
   final List<Widget> _screens = const [
     CategoryScreen(),
     ProductScreen(),
-    DeletedOnesScreen(),
+    HomeScreen(),
   ];
 
   @override
@@ -95,7 +95,7 @@ class _TabScreenState extends State<TabScreen>
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 2);
                           },
-                          icon: CupertinoIcons.delete,
+                          icon: CupertinoIcons.square_favorites_alt,
                           active: context.read<TabBoxCubit>().state == 2,
                         ),
                         // _getButton(

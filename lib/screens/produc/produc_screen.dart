@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
-import 'package:gavhar_app/screens/produc/add_product_screen.dart';
 import 'package:gavhar_app/screens/product_info/info_screen.dart';
 import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -32,30 +31,7 @@ class _ProductScreenState extends State<ProductScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              globalAnimationController.reverse();
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const AddProductScreen();
-                  },
-                ),
-              ).then((value) {
-                globalAnimationController.forward();
-              });
-            },
-            icon: Icon(
-              Icons.add,
-              size: 25.sp,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(width: 10.we),
-        ],
+        actions: [],
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (BuildContext context, ProductState state) {

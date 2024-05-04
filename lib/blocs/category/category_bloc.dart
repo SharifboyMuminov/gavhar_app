@@ -9,9 +9,6 @@ import 'package:gavhar_app/data/repositories/category_repository.dart';
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   CategoryBloc(this.categoryRepository) : super(LoadingCategoryState()) {
     on<CategoryCallEvent>(_callProduct);
-    on<CategoryInsertEvent>(_insertProduct);
-    on<CategoryDeleteEvent>(_deleteProduct);
-    on<CategoryUpdateEvent>(_updateProduct);
   }
 
   final CategoryRepository categoryRepository;
@@ -26,45 +23,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
       emit(SuccessCategoryState(
           categories: networkResponse.data as List<CategoryModel>));
-    } else {
-      emit(ErrorCategoryState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _insertProduct(CategoryInsertEvent event, emit) async {
-    emit(LoadingCategoryState());
-
-    NetworkResponse networkResponse =
-        await categoryRepository.insertCategory(event.categoryModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(CategoryCallEvent());
-    } else {
-      emit(ErrorCategoryState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _deleteProduct(CategoryDeleteEvent event, emit) async {
-    emit(LoadingCategoryState());
-
-    NetworkResponse networkResponse =
-        await categoryRepository.deleteCategory(event.categoryModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(CategoryCallEvent());
-    } else {
-      emit(ErrorCategoryState(errorText: networkResponse.errorText));
-    }
-  }
-
-  Future<void> _updateProduct(CategoryUpdateEvent event, emit) async {
-    emit(LoadingCategoryState());
-
-    NetworkResponse networkResponse =
-        await categoryRepository.updateCategory(event.categoryModel);
-
-    if (networkResponse.errorText.isEmpty) {
-      add(CategoryCallEvent());
     } else {
       emit(ErrorCategoryState(errorText: networkResponse.errorText));
     }
