@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
+import 'package:gavhar_app/blocs/like_product/like_product_bloc.dart';
+import 'package:gavhar_app/blocs/like_product/like_product_event.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
 import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/data/repositories/category_repository.dart';
@@ -25,6 +27,8 @@ Future<void> main(List<String> args) async {
         BlocProvider(
             create: (_) =>
                 CategoryBloc(CategoryRepository())..add(CategoryCallEvent())),
+        BlocProvider(
+            create: (_) => LikeProductBloc()..add(LikeProductCallEvent())),
       ],
       child: const MyApp(),
     ),

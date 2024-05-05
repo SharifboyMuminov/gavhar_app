@@ -48,6 +48,21 @@ class _InfoScreenState extends State<InfoScreen> {
                 size: 25.sp,
               ),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  productModel =
+                      productModel.copyWith(like: !productModel.like);
+                  setState(() {});
+                },
+                icon: Icon(
+                  productModel.like ? Icons.favorite : Icons.favorite_border,
+                  size: 24.sp,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(width: 10.we),
+            ],
             expandedHeight: 400.he,
             flexibleSpace: FlexibleSpaceBar(
               background: Column(

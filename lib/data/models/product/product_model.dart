@@ -5,12 +5,10 @@ class ProductModel {
   final String nameProduct;
   final num price;
   final String description;
-  final int id;
   final bool like;
 
   ProductModel({
     this.like = false,
-    required this.id,
     required this.description,
     required this.nameProduct,
     required this.categoryId,
@@ -35,7 +33,6 @@ class ProductModel {
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
-      id: 0,
     );
   }
 
@@ -49,7 +46,6 @@ class ProductModel {
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
-      id: json["id"] as int? ?? 0,
     );
   }
 
@@ -84,28 +80,26 @@ class ProductModel {
       docId: "",
       imageUrls: [],
       price: 0,
-      id: 0,
     );
   }
-//
-// ProductModel copyWith({
-//   String? categoryId,
-//   String? docId,
-//   List<String>? imageUrls,
-//   num? price,
-//   String? gender,
-//   String? nameProduct,
-//   String? description,
-//   int? id,
-// }) {
-//   return ProductModel(
-//     id: id ?? this.id,
-//     description: description ?? this.description,
-//     categoryId: categoryId ?? this.categoryId,
-//     docId: docId ?? this.docId,
-//     imageUrls: imageUrls ?? this.imageUrls,
-//     price: price ?? this.price,
-//     nameProduct: nameProduct ?? this.nameProduct,
-//   );
-// }
+
+  ProductModel copyWith({
+    String? categoryId,
+    String? docId,
+    List<String>? imageUrls,
+    num? price,
+    String? nameProduct,
+    String? description,
+    bool? like,
+  }) {
+    return ProductModel(
+      like: like ?? this.like,
+      description: description ?? this.description,
+      categoryId: categoryId ?? this.categoryId,
+      docId: docId ?? this.docId,
+      imageUrls: imageUrls ?? this.imageUrls,
+      price: price ?? this.price,
+      nameProduct: nameProduct ?? this.nameProduct,
+    );
+  }
 }

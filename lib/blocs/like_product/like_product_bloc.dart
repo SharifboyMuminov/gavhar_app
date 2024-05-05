@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_event.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_state.dart';
@@ -28,10 +29,10 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
     networkResponse = await LocalDatabase.getAllDebtors();
 
     if (networkResponse.errorText.isEmpty) {
+      // debugPrint(networkResponse.data.toString());
       emit(
         state.copyWith(
-            status: FromStatus.success,
-            likeProducts: networkResponse.data as List<ProductModel>),
+            status: FromStatus.success, likeProducts: networkResponse.data),
       );
     } else {
       emit(
@@ -66,7 +67,7 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
 
     NetworkResponse networkResponse = NetworkResponse();
 
-    networkResponse = await LocalDatabase.deleteDebtors(event.productModel.id);
+    networkResponse = await LocalDatabase.deleteDebtors(event.productModel.docId);
 
     if (networkResponse.errorText.isEmpty) {
       add(LikeProductCallEvent());
@@ -87,7 +88,7 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
     NetworkResponse networkResponse = NetworkResponse();
 
     for (ProductModel productModel in event.productModels) {
-      networkResponse = await LocalDatabase.deleteDebtors(productModel.id);
+      networkResponse = await LocalDatabase.deleteDebtors(productModel.docId);
       if (networkResponse.errorText.isNotEmpty) {
         emit(
           state.copyWith(

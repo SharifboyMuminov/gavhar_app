@@ -38,7 +38,7 @@ class LocalDatabase {
     const textType = "TEXT NOT NULL";
 
     await db.execute('''CREATE TABLE Products (
-     id $idType,
+     doc_id $String,
      description $textType,
      name_product $textType,
      image_urls $textType,
@@ -65,9 +65,9 @@ class LocalDatabase {
 
     try {
       final db = await databaseInstance.database;
-      String orderBy = "id DESC";
+      String orderBy = "doc_id DESC";
       List json = await db.query("Products", orderBy: orderBy);
-      networkResponse.data = json.map((e) => ProductModel.fromJsonForSql(e));
+      networkResponse.data = json.map((e) => ProductModel.fromJsonForSql(e)).toList();
     } catch (error) {
       networkResponse.errorText = error.toString();
     }
@@ -75,15 +75,15 @@ class LocalDatabase {
     return networkResponse;
   }
 
-  static Future<NetworkResponse> deleteDebtors(int id) async {
+  static Future<NetworkResponse> deleteDebtors(String docId) async {
     NetworkResponse networkResponse = NetworkResponse();
 
     try {
       final db = await databaseInstance.database;
       await db.delete(
         "Products",
-        where: "id = ?",
-        whereArgs: [id],
+        where: "doc_id = ?",
+        whereArgs: [docId],
       );
     } catch (error) {
       networkResponse.errorText = error.toString();
