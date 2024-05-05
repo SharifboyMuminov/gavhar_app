@@ -4,14 +4,14 @@ class ProductModel {
   final List<String> imageUrls;
   final String nameProduct;
   final num price;
-  final String gender;
   final String description;
-  final List<String> storagePaths;
+  final int id;
+  final bool like;
 
   ProductModel({
-    required this.storagePaths,
+    this.like = false,
+    required this.id,
     required this.description,
-    required this.gender,
     required this.nameProduct,
     required this.categoryId,
     required this.docId,
@@ -30,24 +30,36 @@ class ProductModel {
 
     return ProductModel(
       description: json["description"] as String? ?? "",
-      gender: json["gender"] as String? ?? "",
       nameProduct: json["name_product"] as String? ?? "",
       categoryId: json['category_id'] as String? ?? "",
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
-      storagePaths: imagePaths,
+      id: 0,
+    );
+  }
+
+  factory ProductModel.fromJsonForSql(Map<String, dynamic> json) {
+    List<String> imageUrls = (json["image_urls"] as String? ?? '').split(" ");
+
+    return ProductModel(
+      description: json["description"] as String? ?? "",
+      nameProduct: json["name_product"] as String? ?? "",
+      categoryId: json['category_id'] as String? ?? "",
+      docId: json['doc_id'] as String? ?? "",
+      imageUrls: imageUrls,
+      price: json['price'] as num? ?? 0,
+      id: json["id"] as int? ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'storage_paths': storagePaths,
       "description": description,
       'category_id': categoryId,
       'name_product': nameProduct,
       'doc_id': docId,
-      'image_urls': imageUrls,
+      'image_urls': imageUrls.join(" "),
       'price': price,
     };
   }
@@ -67,36 +79,33 @@ class ProductModel {
   static ProductModel getDefaultProduct() {
     return ProductModel(
       description: "",
-      gender: "",
       nameProduct: "",
       categoryId: "",
       docId: "",
       imageUrls: [],
       price: 0,
-      storagePaths: [],
+      id: 0,
     );
   }
-
-  ProductModel copyWith({
-    String? categoryId,
-    String? docId,
-    List<String>? imageUrls,
-    num? price,
-    String? gender,
-    String? nameProduct,
-    String? description,
-    String? emailReques,
-    List<String>? storagePaths,
-  }) {
-    return ProductModel(
-      description: description ?? this.description,
-      categoryId: categoryId ?? this.categoryId,
-      docId: docId ?? this.docId,
-      imageUrls: imageUrls ?? this.imageUrls,
-      price: price ?? this.price,
-      nameProduct: nameProduct ?? this.nameProduct,
-      gender: gender ?? this.gender,
-      storagePaths: storagePaths ?? this.storagePaths,
-    );
-  }
+//
+// ProductModel copyWith({
+//   String? categoryId,
+//   String? docId,
+//   List<String>? imageUrls,
+//   num? price,
+//   String? gender,
+//   String? nameProduct,
+//   String? description,
+//   int? id,
+// }) {
+//   return ProductModel(
+//     id: id ?? this.id,
+//     description: description ?? this.description,
+//     categoryId: categoryId ?? this.categoryId,
+//     docId: docId ?? this.docId,
+//     imageUrls: imageUrls ?? this.imageUrls,
+//     price: price ?? this.price,
+//     nameProduct: nameProduct ?? this.nameProduct,
+//   );
+// }
 }

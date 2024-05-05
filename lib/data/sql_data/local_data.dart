@@ -1,3 +1,5 @@
+import 'package:gavhar_app/data/models/network_respons/network_respons_model.dart';
+import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -43,37 +45,49 @@ class LocalDatabase {
      price INTEGER
     )''');
   }
-// static Future<NoteModel> insertDebtors(NoteModel personModul) async {
-//   final db = await databaseInstance.database;
-//
-//   int savedTaskID =
-//       await db.insert(PersonContans.tableName, personModul.toJson());
-//
-//   return personModul.copyWith(id: savedTaskID);
-// }
 
-// static Future<List<NoteModel>> getAllDebtors() async {
-//   final db = await databaseInstance.database;
-//   String orderBy = "${PersonContans.id} DESC";
-//   List json = await db.query(PersonContans.tableName, orderBy: orderBy);
-//   return json.map((e) => NoteModel.fromJson(e)).toList();
-// }
-//
-// static Future<int> deleteDebtors(int id) async {
-//   final db = await databaseInstance.database;
-//   int deletedId = await db.delete(
-//     PersonContans.tableName,
-//     where: "${PersonContans.id} = ?",
-//     whereArgs: [id],
-//   );
-//   return deletedId;
-// }
-//
-// static updateNote({required NoteModel noteModel}) async {
-//   final db = await databaseInstance.database;
-//   // debugPrint(noteModel.id.toString());
-//
-//   await db.update(PersonContans.tableName, noteModel.toJsonForUpdate(),
-//       where: "${PersonContans.id} = ?", whereArgs: [noteModel.id]);
-// }
+  static Future<NetworkResponse> insertDebtors(ProductModel personModel) async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+
+      await db.insert("Products", personModel.toJson());
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+
+    return networkResponse;
+  }
+
+  static Future<NetworkResponse> getAllDebtors() async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+      String orderBy = "id DESC";
+      List json = await db.query("Products", orderBy: orderBy);
+      networkResponse.data = json.map((e) => ProductModel.fromJsonForSql(e));
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+
+    return networkResponse;
+  }
+
+  static Future<NetworkResponse> deleteDebtors(int id) async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+      await db.delete(
+        "Products",
+        where: "id = ?",
+        whereArgs: [id],
+      );
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+    return networkResponse;
+  }
 }

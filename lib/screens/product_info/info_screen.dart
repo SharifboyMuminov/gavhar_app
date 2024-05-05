@@ -128,22 +128,6 @@ class _InfoScreenState extends State<InfoScreen> {
                         ),
                       ),
                       SizedBox(height: 10.he),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            productModel.gender != "Universal"
-                                ? "For ${productModel.gender}"
-                                : productModel.gender,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 22.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10.he),
                       Text(
                         "${productModel.price} sum",
                         maxLines: 2,
