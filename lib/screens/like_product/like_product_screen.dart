@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_bloc.dart';
+import 'package:gavhar_app/blocs/like_product/like_product_event.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_state.dart';
 import 'package:gavhar_app/data/enums/status_enum.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
@@ -45,6 +46,24 @@ class _LikeProductScreenState extends State<LikeProductScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        actions: [
+          if (clickProducts.isNotEmpty)
+            IconButton(
+              onPressed: () {
+                context.read<LikeProductBloc>().add(
+                    LikeProductDeleteForListEvent(
+                        productModels: clickProducts));
+                clickProducts = [];
+                setState(() {});
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.redAccent,
+                size: 25.sp,
+              ),
+            ),
+          SizedBox(width: 10.we),
+        ],
       ),
       body: BlocBuilder<LikeProductBloc, LikeProductState>(
         builder: (BuildContext context, LikeProductState state) {
@@ -109,6 +128,7 @@ class _LikeProductScreenState extends State<LikeProductScreen> {
                       );
                     }
                   },
+                  check: clickProducts.contains(state.likeProducts[index]),
                   onLongPress: () {
                     if (clickProducts.contains(state.likeProducts[index])) {
                       clickProducts.remove(state.likeProducts[index]);
