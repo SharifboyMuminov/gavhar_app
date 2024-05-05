@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_bloc.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_state.dart';
 import 'package:gavhar_app/data/enums/status_enum.dart';
+import 'package:gavhar_app/data/models/product/product_model.dart';
 import 'package:gavhar_app/screens/product_info/info_screen.dart';
 import 'package:gavhar_app/screens/widgets/product_item.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
@@ -20,6 +21,8 @@ class LikeProductScreen extends StatefulWidget {
 }
 
 class _LikeProductScreenState extends State<LikeProductScreen> {
+  List<ProductModel> clickProducts = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,19 +90,32 @@ class _LikeProductScreenState extends State<LikeProductScreen> {
                 return ProductItem(
                   productModel: state.likeProducts[index],
                   onTab: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return InfoScreen(
-                              productModel: state.likeProducts[index]);
-                        },
-                      ),
-                    );
+                    if (clickProducts.isNotEmpty) {
+                      if (clickProducts.contains(state.likeProducts[index])) {
+                        clickProducts.remove(state.likeProducts[index]);
+                      } else {
+                        clickProducts.add(state.likeProducts[index]);
+                      }
+                      setState(() {});
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return InfoScreen(
+                                productModel: state.likeProducts[index]);
+                          },
+                        ),
+                      );
+                    }
                   },
                   onLongPress: () {
-                    // context.read<ProductBloc>().add(ProductDeleteEvent(
-                    //     productModel: state.products[index]));
+                    if (clickProducts.contains(state.likeProducts[index])) {
+                      clickProducts.remove(state.likeProducts[index]);
+                    } else {
+                      clickProducts.add(state.likeProducts[index]);
+                    }
+                    setState(() {});
                   },
                 );
               },

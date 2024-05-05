@@ -34,7 +34,6 @@ class LocalDatabase {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    const idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
     const textType = "TEXT NOT NULL";
 
     await db.execute('''CREATE TABLE Products (

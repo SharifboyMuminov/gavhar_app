@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gavhar_app/blocs/like_product/like_product_bloc.dart';
+import 'package:gavhar_app/blocs/like_product/like_product_event.dart';
 import 'package:gavhar_app/data/models/product/product_model.dart';
+import 'package:gavhar_app/screens/functions/functiosn.dart';
 import 'package:gavhar_app/screens/produc/widget/show_image.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/platforma.dart';
@@ -26,6 +30,17 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   void initState() {
     productModel = widget.productModel;
+    Future.microtask(
+      () {
+        productModel = productModel.copyWith(
+            like: isThereProductInLike(
+                productModels:
+                    context.read<LikeProductBloc>().state.likeProducts,
+                isThereProduct: productModel));
+        // debugPrint("Like: ${productModel.like}");
+        setState(() {});
+      },
+    );
 
     super.initState();
   }
@@ -51,6 +66,16 @@ class _InfoScreenState extends State<InfoScreen> {
             actions: [
               IconButton(
                 onPressed: () {
+                  if (productModel.like) {
+                    // debugPrint("Delete Like Product---------");
+
+                    context.read<LikeProductBloc>().add(
+                        LikeProductDeleteEvent(productModel: productModel));
+                  } else {
+                    // debugPrint("Insert Like Product---------");
+                    context.read<LikeProductBloc>().add(
+                        LikeProductInsertEvent(productModel: productModel));
+                  }
                   productModel =
                       productModel.copyWith(like: !productModel.like);
                   setState(() {});

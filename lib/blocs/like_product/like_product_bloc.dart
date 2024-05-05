@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_event.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_state.dart';
@@ -30,6 +30,7 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
 
     if (networkResponse.errorText.isEmpty) {
       // debugPrint(networkResponse.data.toString());
+
       emit(
         state.copyWith(
             status: FromStatus.success, likeProducts: networkResponse.data),
@@ -53,6 +54,8 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
     if (networkResponse.errorText.isEmpty) {
       add(LikeProductCallEvent());
     } else {
+      // debugPrint(networkResponse.errorText);
+
       emit(
         state.copyWith(
           status: FromStatus.error,
@@ -67,7 +70,8 @@ class LikeProductBloc extends Bloc<LikeProductEvent, LikeProductState> {
 
     NetworkResponse networkResponse = NetworkResponse();
 
-    networkResponse = await LocalDatabase.deleteDebtors(event.productModel.docId);
+    networkResponse =
+        await LocalDatabase.deleteDebtors(event.productModel.docId);
 
     if (networkResponse.errorText.isEmpty) {
       add(LikeProductCallEvent());

@@ -12,13 +12,13 @@ class ProductItem extends StatelessWidget {
     required this.productModel,
     required this.onTab,
     required this.onLongPress,
-    this.chek = false,
+    this.check = false,
   });
 
   final ProductModel productModel;
   final VoidCallback onTab;
   final VoidCallback onLongPress;
-  final bool chek;
+  final bool check;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class ProductItem extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  if (chek)
+                  if (check)
                     SizedBox(
                       width: double.infinity,
                       height: double.infinity,

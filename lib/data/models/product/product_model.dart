@@ -6,9 +6,11 @@ class ProductModel {
   final num price;
   final String description;
   final bool like;
+  final bool chek;
 
   ProductModel({
     this.like = false,
+    this.chek = false,
     required this.description,
     required this.nameProduct,
     required this.categoryId,
@@ -42,7 +44,7 @@ class ProductModel {
     return ProductModel(
       description: json["description"] as String? ?? "",
       nameProduct: json["name_product"] as String? ?? "",
-      categoryId: json['category_id'] as String? ?? "",
+      categoryId: "",
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
@@ -52,7 +54,6 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     return {
       "description": description,
-      'category_id': categoryId,
       'name_product': nameProduct,
       'doc_id': docId,
       'image_urls': imageUrls.join(" "),
