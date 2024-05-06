@@ -25,3 +25,5 @@ class RemoveProductInBasketForListEvent extends BasketEvent {
 
   RemoveProductInBasketForListEvent({required this.productModel});
 }
+
+class CallBasketProductsEvent extends BasketEvent {}
