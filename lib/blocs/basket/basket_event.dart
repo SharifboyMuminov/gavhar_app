@@ -16,8 +16,11 @@ class DeleteProductInBasketEvent extends BasketEvent {
 
 class UpdateProductBasketEvent extends BasketEvent {
   ProductModel productModel;
+  final int? index;
+  final bool remove;
 
-  UpdateProductBasketEvent({required this.productModel});
+  UpdateProductBasketEvent(
+      {this.index, this.remove = false, required this.productModel});
 }
 
 class DeleteProductInBasketForListEvent extends BasketEvent {

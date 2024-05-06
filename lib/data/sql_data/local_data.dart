@@ -104,7 +104,7 @@ class LocalDatabase {
 
   ///Basket Table----------------------------------------------------
 
-  static Future<NetworkResponse> insertToBasketProdeuct(
+  static Future<NetworkResponse> insertToBasketProduct(
       ProductModel personModel) async {
     NetworkResponse networkResponse = NetworkResponse();
 
@@ -151,11 +151,19 @@ class LocalDatabase {
     return networkResponse;
   }
 
-  static updateBasketProduct({required ProductModel productModel}) async {
-    final db = await databaseInstance.database;
-    // debugPrint(noteModel.id.toString());
+  static Future<NetworkResponse> updateBasketProduct(
+      {required ProductModel productModel}) async {
+    NetworkResponse networkResponse = NetworkResponse();
 
-    await db.update("Basket", productModel.toJsonForBasket(),
-        where: "doc_id = ?", whereArgs: [productModel.docId]);
+    try {
+      final db = await databaseInstance.database;
+
+      await db.update("Basket", productModel.toJsonForBasket(),
+          where: "doc_id = ?", whereArgs: [productModel.docId]);
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+
+    return networkResponse;
   }
 }
