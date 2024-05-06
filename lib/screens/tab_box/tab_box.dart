@@ -81,21 +81,27 @@ class _TabScreenState extends State<TabScreen>
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 0);
                           },
-                          icon: CupertinoIcons.house,
+                          icon: context.read<TabBoxCubit>().state == 0
+                              ? CupertinoIcons.house_alt_fill
+                              : CupertinoIcons.house_alt,
                           active: context.read<TabBoxCubit>().state == 0,
                         ),
                         _getButton(
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 1);
                           },
-                          icon: CupertinoIcons.shopping_cart,
+                          icon: context.read<TabBoxCubit>().state == 1
+                              ? Icons.shopping_cart
+                              : Icons.shopping_cart_outlined,
                           active: context.read<TabBoxCubit>().state == 1,
                         ),
                         _getButton(
                           onTab: () {
                             context.read<TabBoxCubit>().changeValue(value: 2);
                           },
-                          icon: CupertinoIcons.square_favorites_alt,
+                          icon: context.read<TabBoxCubit>().state == 2
+                              ? Icons.shopping_basket
+                              : Icons.shopping_basket_outlined,
                           active: context.read<TabBoxCubit>().state == 2,
                         ),
                         // _getButton(
