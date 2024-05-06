@@ -77,6 +77,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           borderRadius: BorderRadius.circular(10.r)),
                     ),
                     onPressed: () {
+                      ///TODO ERROR
+
                       globalAnimationController.reverse();
 
                       // debugPrint(state.categories[index].docId+"----------");

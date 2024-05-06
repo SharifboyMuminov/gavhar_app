@@ -14,6 +14,7 @@ import 'package:gavhar_app/data/repositories/category_repository.dart';
 import 'package:gavhar_app/data/repositories/product_repository.dart';
 import 'package:gavhar_app/server/firebase_options.dart';
 import 'package:gavhar_app/screens/splash/splash_screen.dart';
+import 'package:gavhar_app/utils/app_colors.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +51,13 @@ class MyApp extends StatelessWidget {
         ScreenUtil.init(context);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(useMaterial3: true),
+          theme: ThemeData(
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.c_FFFFFF,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.c_FFFFFF,
+            ),
+          ),
           home: child,
         );
       },

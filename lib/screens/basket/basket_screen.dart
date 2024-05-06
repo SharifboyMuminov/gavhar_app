@@ -54,7 +54,10 @@ class _BasketScreenState extends State<BasketScreen> {
                 childAspectRatio: 0.75,
               ),
               itemBuilder: (BuildContext context, int index) {
-                return Image.network(state.products[index].imageUrls.first);
+                return Image.network(
+                  state.products[index].imageUrls.first,
+                  fit: BoxFit.cover,
+                );
               },
             );
           }
