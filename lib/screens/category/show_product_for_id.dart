@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/blocs/product/product_bloc.dart';
+import 'package:gavhar_app/blocs/product/product_event.dart';
 import 'package:gavhar_app/blocs/product/product_state.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
 import 'package:gavhar_app/screens/product_info/info_screen.dart';

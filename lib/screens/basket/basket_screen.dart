@@ -56,6 +56,7 @@ class _BasketScreenState extends State<BasketScreen> {
               itemCount: state.products.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
+                  margin: EdgeInsets.symmetric(vertical: 10.he),
                   padding:
                       EdgeInsets.symmetric(horizontal: 10.we, vertical: 10.he),
                   decoration: BoxDecoration(

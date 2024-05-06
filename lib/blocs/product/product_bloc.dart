@@ -7,6 +7,7 @@ import 'package:gavhar_app/data/repositories/product_repository.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this.productRepository) : super(LoadingProductState()) {
     on<ProductCallEvent>(_callProduct);
+    on<ProductGetForCategoryIdEvent>(_getProductForId);
   }
 
   final ProductRepository productRepository;
