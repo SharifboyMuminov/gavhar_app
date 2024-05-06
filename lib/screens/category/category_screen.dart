@@ -45,110 +45,107 @@ class _CategoryScreenState extends State<CategoryScreen> {
           if (state is SuccessCategoryState) {
             if (state.categories.isEmpty) {
               return Center(
-                  child: Image.asset(
-                AppConst.emptyData,
-                fit: BoxFit.cover,
-              ));
+                child: Image.asset(
+                  AppConst.emptyData,
+                  fit: BoxFit.cover,
+                ),
+              );
             }
-            return Stack(
-              children: [
-                StaggerGridMyWidget(
-                  child: List.generate(state.categories.length, (index) {
-                    return Container(
-                      // padding: EdgeInsets.symmetric(vertical: 10.he),
-                      alignment: Alignment.bottomCenter,
-                      height: index.isEven ? 200.he : 250.he,
-                      decoration: BoxDecoration(
-                        color: AppColors.c_FFFFFF,
-                        boxShadow: [
-                          // NetworkImage(state.categories[index].imageUrl)
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.27),
-                            blurRadius: 30,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 17),
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(10.r),
+            return StaggerGridMyWidget(
+              child: List.generate(state.categories.length, (index) {
+                return Container(
+                  // padding: EdgeInsets.symmetric(vertical: 10.he),
+                  alignment: Alignment.bottomCenter,
+                  height: index.isEven ? 200.he : 250.he,
+                  decoration: BoxDecoration(
+                    color: AppColors.c_FFFFFF,
+                    boxShadow: [
+                      // NetworkImage(state.categories[index].imageUrl)
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.27),
+                        blurRadius: 30,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 17),
                       ),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r)),
-                        ),
-                        onPressed: () {
-                          globalAnimationController.reverse();
+                    ],
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r)),
+                    ),
+                    onPressed: () {
+                      globalAnimationController.reverse();
 
-                          // debugPrint(state.categories[index].docId+"----------");
-                          context.read<ProductBloc>().add(
-                                ProductGetForCategoryIdEvent(
-                                  categoryId: state.categories[index].docId,
-                                ),
-                              );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const ShowProductForCategoryId();
-                              },
+                      // debugPrint(state.categories[index].docId+"----------");
+                      context.read<ProductBloc>().add(
+                            ProductGetForCategoryIdEvent(
+                              categoryId: state.categories[index].docId,
                             ),
-                          ).then((value) {
-                            context.read<ProductBloc>().add(ProductCallEvent());
-                            globalAnimationController.forward();
-                          });
-                        },
-                        child: Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: CachedNetworkImage(
-                                imageUrl: state.categories[index].imageUrl,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator.adaptive(),
-                                errorWidget: (context, url, error) {
-                                  debugPrint("errorWidget asdfasd asdf asdafd");
-                                  return Image.asset(
-                                    AppConst.notImage,
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: index.isEven ? 200.he : 250.he,
-                                  );
-                                },
+                          );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ShowProductForCategoryId();
+                          },
+                        ),
+                      ).then((value) {
+                        context.read<ProductBloc>().add(ProductCallEvent());
+                        globalAnimationController.forward();
+                      });
+                    },
+                    child: Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.r),
+                          child: CachedNetworkImage(
+                            imageUrl: state.categories[index].imageUrl,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator.adaptive(),
+                            errorWidget: (context, url, error) {
+                              debugPrint("errorWidget asdfasd asdf asdafd");
+                              return Image.asset(
+                                AppConst.notImage,
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 height: index.isEven ? 200.he : 250.he,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                state.categories[index].categoryName,
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: AppColors.c_FFFFFF,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20.sp,
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Colors.amber.withOpacity(0.7),
-                                      blurRadius: 10,
-                                      spreadRadius: 10,
-                                      offset: const Offset(0, 0),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                              );
+                            },
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: index.isEven ? 200.he : 250.he,
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-                ),
-              ],
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Text(
+                            state.categories[index].categoryName,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: AppColors.c_FFFFFF,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20.sp,
+                              shadows: [
+                                BoxShadow(
+                                  color: Colors.amber.withOpacity(0.7),
+                                  blurRadius: 10,
+                                  spreadRadius: 10,
+                                  offset: const Offset(0, 0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
             );
           }
 

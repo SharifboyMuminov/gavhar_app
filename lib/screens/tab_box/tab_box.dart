@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gavhar_app/data/local/local_varibals.dart';
+import 'package:gavhar_app/screens/basket/basket_screen.dart';
 import 'package:gavhar_app/screens/category/category_screen.dart';
-import 'package:gavhar_app/screens/home/home_screen.dart';
 import 'package:gavhar_app/screens/produc/produc_screen.dart';
 import 'package:gavhar_app/screens/tab_box/cubits/tab_box_cubit.dart';
 import 'package:gavhar_app/utils/app_colors.dart';
@@ -23,7 +23,7 @@ class _TabScreenState extends State<TabScreen>
   final List<Widget> _screens = const [
     CategoryScreen(),
     ProductScreen(),
-    HomeScreen(),
+    BasketScreen(),
   ];
 
   @override

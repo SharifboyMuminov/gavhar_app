@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gavhar_app/blocs/basket/basket_bloc.dart';
+import 'package:gavhar_app/blocs/basket/basket_event.dart';
 import 'package:gavhar_app/blocs/category/category_bloc.dart';
 import 'package:gavhar_app/blocs/category/category_event.dart';
 import 'package:gavhar_app/blocs/like_product/like_product_bloc.dart';
@@ -29,6 +31,8 @@ Future<void> main(List<String> args) async {
                 CategoryBloc(CategoryRepository())..add(CategoryCallEvent())),
         BlocProvider(
             create: (_) => LikeProductBloc()..add(LikeProductCallEvent())),
+        BlocProvider(
+            create: (_) => BasketProductBloc()..add(CallBasketProductsEvent())),
       ],
       child: const MyApp(),
     ),

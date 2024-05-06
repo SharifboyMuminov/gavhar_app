@@ -26,6 +26,8 @@ class BasketProductBloc extends Bloc<BasketEvent, BasketState> {
 
     for (ProductModel pro in state.products) {
       if (pro.docId == event.productModel.docId) {
+        add(UpdateProductBasketEvent(
+            productModel: pro.copyWith(count: pro.count + 1)));
         return;
       }
     }
