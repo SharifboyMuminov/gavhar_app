@@ -8,10 +8,10 @@ class AddProductToBasketEvent extends BasketEvent {
   AddProductToBasketEvent({required this.productModel});
 }
 
-class RemoveProductInBasketEvent extends BasketEvent {
+class DeleteProductInBasketEvent extends BasketEvent {
   ProductModel productModel;
 
-  RemoveProductInBasketEvent({required this.productModel});
+  DeleteProductInBasketEvent({required this.productModel});
 }
 
 class UpdateProductBasketEvent extends BasketEvent {
@@ -20,10 +20,10 @@ class UpdateProductBasketEvent extends BasketEvent {
   UpdateProductBasketEvent({required this.productModel});
 }
 
-class RemoveProductInBasketForListEvent extends BasketEvent {
+class DeleteProductInBasketForListEvent extends BasketEvent {
   ProductModel productModel;
 
-  RemoveProductInBasketForListEvent({required this.productModel});
+  DeleteProductInBasketForListEvent({required this.productModel});
 }
 
 class CallBasketProductsEvent extends BasketEvent {}

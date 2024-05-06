@@ -17,6 +17,7 @@ class BasketProductBloc extends Bloc<BasketEvent, BasketState> {
         ) {
     on<AddProductToBasketEvent>(_insertToBasketProduct);
     on<CallBasketProductsEvent>(_callCallBasketProducts);
+    on<DeleteProductInBasketEvent>(_deleteProduct);
   }
 
   Future<void> _insertToBasketProduct(
@@ -52,6 +53,22 @@ class BasketProductBloc extends Bloc<BasketEvent, BasketState> {
     if (networkResponse.errorText.isEmpty) {
       emit(state.copyWith(
           fromStatus: FromStatus.success, products: networkResponse.data));
+    } else {
+      emit(state.copyWith(
+          fromStatus: FromStatus.error,
+          errorString: networkResponse.errorText));
+    }
+  }
+
+  Future<void> _deleteProduct(DeleteProductInBasketEvent event, emit) async {
+    emit(state.copyWith(fromStatus: FromStatus.loading));
+
+    NetworkResponse networkResponse =
+        await LocalDatabase.deleteDebtors(event.productModel.docId);
+
+    if (networkResponse.errorText.isEmpty) {
+      add(CallBasketProductsEvent());
+      emit(state.copyWith(fromStatus: FromStatus.success));
     } else {
       emit(state.copyWith(
           fromStatus: FromStatus.error,
