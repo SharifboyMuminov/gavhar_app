@@ -6,11 +6,13 @@ class ProductModel {
   final num price;
   final String description;
   final bool like;
-  final bool chek;
+  final bool check;
+  final int count;
 
   ProductModel({
     this.like = false,
-    this.chek = false,
+    this.check = false,
+    required this.count,
     required this.description,
     required this.nameProduct,
     required this.categoryId,
@@ -35,6 +37,7 @@ class ProductModel {
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
+      count: json["count"] as int? ?? 0,
     );
   }
 
@@ -48,6 +51,7 @@ class ProductModel {
       docId: json['doc_id'] as String? ?? "",
       imageUrls: imageUrls,
       price: json['price'] as num? ?? 0,
+      count: json["count"] as int? ?? 1,
     );
   }
 
@@ -58,6 +62,17 @@ class ProductModel {
       'doc_id': docId,
       'image_urls': imageUrls.join(" "),
       'price': price,
+    };
+  }
+
+  Map<String, dynamic> toJsonForBasket() {
+    return {
+      "description": description,
+      'name_product': nameProduct,
+      'doc_id': docId,
+      'image_urls': imageUrls.join(" "),
+      'price': price,
+      'count': count,
     };
   }
 
@@ -81,6 +96,7 @@ class ProductModel {
       docId: "",
       imageUrls: [],
       price: 0,
+      count: 0,
     );
   }
 
@@ -92,6 +108,7 @@ class ProductModel {
     String? nameProduct,
     String? description,
     bool? like,
+    int? count,
   }) {
     return ProductModel(
       like: like ?? this.like,
@@ -101,6 +118,7 @@ class ProductModel {
       imageUrls: imageUrls ?? this.imageUrls,
       price: price ?? this.price,
       nameProduct: nameProduct ?? this.nameProduct,
+      count: count ?? this.count,
     );
   }
 }

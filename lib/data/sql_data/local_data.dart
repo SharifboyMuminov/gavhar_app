@@ -43,7 +43,18 @@ class LocalDatabase {
      image_urls $textType,
      price INTEGER
     )''');
+
+    await db.execute('''CREATE TABLE Basket (
+     doc_id $String,
+     description $textType,
+     name_product $textType,
+     image_urls $textType,
+     price INTEGER,
+     count INTEGER
+    )''');
   }
+
+  ///Products Table----------------------------------------------------
 
   static Future<NetworkResponse> insertDebtors(ProductModel personModel) async {
     NetworkResponse networkResponse = NetworkResponse();
@@ -66,7 +77,8 @@ class LocalDatabase {
       final db = await databaseInstance.database;
       String orderBy = "doc_id DESC";
       List json = await db.query("Products", orderBy: orderBy);
-      networkResponse.data = json.map((e) => ProductModel.fromJsonForSql(e)).toList();
+      networkResponse.data =
+          json.map((e) => ProductModel.fromJsonForSql(e)).toList();
     } catch (error) {
       networkResponse.errorText = error.toString();
     }
@@ -88,5 +100,62 @@ class LocalDatabase {
       networkResponse.errorText = error.toString();
     }
     return networkResponse;
+  }
+
+  ///Basket Table----------------------------------------------------
+
+  static Future<NetworkResponse> insertToBasketProdeuct(
+      ProductModel personModel) async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+
+      await db.insert("Basket", personModel.toJson());
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+
+    return networkResponse;
+  }
+
+  static Future<NetworkResponse> getAllBasketProducts() async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+      String orderBy = "doc_id DESC";
+      List json = await db.query("Basket", orderBy: orderBy);
+      networkResponse.data =
+          json.map((e) => ProductModel.fromJsonForSql(e)).toList();
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+
+    return networkResponse;
+  }
+
+  static Future<NetworkResponse> deleteProductToBasket(String docId) async {
+    NetworkResponse networkResponse = NetworkResponse();
+
+    try {
+      final db = await databaseInstance.database;
+      await db.delete(
+        "Basket",
+        where: "doc_id = ?",
+        whereArgs: [docId],
+      );
+    } catch (error) {
+      networkResponse.errorText = error.toString();
+    }
+    return networkResponse;
+  }
+
+  static updateBasketProduct({required ProductModel productModel}) async {
+    final db = await databaseInstance.database;
+    // debugPrint(noteModel.id.toString());
+
+    await db.update("Basket", productModel.toJsonForBasket(),
+        where: "doc_id = ?", whereArgs: [productModel.docId]);
   }
 }

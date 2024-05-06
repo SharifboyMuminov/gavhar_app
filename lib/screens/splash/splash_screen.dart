@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:lottie/lottie.dart';
 import 'package:gavhar_app/screens/tab_box/tab_box.dart';
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextHome() async {
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(seconds: 3),
       () {
         Navigator.pushReplacement(
           context,
@@ -38,12 +39,10 @@ class _SplashScreenState extends State<SplashScreen> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.c_FFFFFF,
       body: Center(
-        child: Hero(
-          tag: 1,
-          child: Lottie.asset(
-            "assets/lottie/splash.json",
-          ),
+        child: Lottie.asset(
+          "assets/lottie/splash.json",
         ),
       ),
     );

@@ -13,10 +13,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-          tag: 1,
-          child: Lottie.asset("assets/lottie/splash.json"),
-        ),
         title: Text("Home Screen"),
       ),
     );
