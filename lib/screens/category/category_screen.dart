@@ -128,9 +128,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 return const ShowProductForCategoryId();
                               },
                             ),
-                          ).then((value) {
-                            context.read<ProductBloc>().add(ProductCallEvent());
-                          });
+                          ).then(
+                            (value) {
+                              context
+                                  .read<ProductBloc>()
+                                  .add(ProductCallEvent());
+                            },
+                          );
                         },
                         child: Stack(
                           children: [
@@ -138,8 +142,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               borderRadius: BorderRadius.circular(10.r),
                               child: CachedNetworkImage(
                                 imageUrl: state.categories[index].imageUrl,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator.adaptive(),
+                                placeholder: (context, url) => const Center(
+                                    child:
+                                        CircularProgressIndicator.adaptive()),
                                 errorWidget: (context, url, error) {
                                   debugPrint("errorWidget asdfasd asdf asdafd");
                                   return Image.asset(

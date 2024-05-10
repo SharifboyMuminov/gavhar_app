@@ -81,7 +81,7 @@ class ProductItem extends StatelessWidget {
           );
         },
         placeholder: (context, url) =>
-            const CircularProgressIndicator.adaptive(),
+            const Center(child: CircularProgressIndicator.adaptive()),
         errorWidget: (context, url, error) => Image.asset(AppConst.emptyData),
       ),
     );
