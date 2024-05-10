@@ -28,7 +28,7 @@ class ShowImage extends StatelessWidget {
               ? productModel.imageUrls.last
               : productModel.imageUrls.first,
           placeholder: (context, url) =>
-              const CircularProgressIndicator.adaptive(),
+              const Center(child: CircularProgressIndicator.adaptive()),
           errorWidget: (context, url, error) {
             debugPrint("errorWidget asdfasd asdf asdafd");
             return Image.asset(

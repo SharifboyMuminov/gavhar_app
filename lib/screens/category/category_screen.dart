@@ -77,7 +77,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           borderRadius: BorderRadius.circular(10.r)),
                     ),
                     onPressed: () {
-
                       globalAnimationController.reverse();
 
                       // debugPrint(state.categories[index].docId+"----------");
@@ -104,8 +103,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           borderRadius: BorderRadius.circular(10.r),
                           child: CachedNetworkImage(
                             imageUrl: state.categories[index].imageUrl,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator.adaptive(),
+                            placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator.adaptive()),
                             errorWidget: (context, url, error) {
                               debugPrint("errorWidget asdfasd asdf asdafd");
                               return Image.asset(
