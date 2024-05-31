@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextHome() async {
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(seconds: 3),
       () {
         Navigator.pushReplacement(
           context,
