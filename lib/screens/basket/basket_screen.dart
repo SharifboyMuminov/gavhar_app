@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +11,6 @@ import 'package:gavhar_app/utils/app_colors.dart';
 import 'package:gavhar_app/utils/app_constans/app_constans.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 
-import '../produc/widget/show_image.dart';
 
 class BasketScreen extends StatefulWidget {
   const BasketScreen({super.key});
@@ -80,16 +78,18 @@ class _BasketScreenState extends State<BasketScreen> {
                         children: [
                           SetMyButton(
                               onTab: () {
-                                context.read<BasketProductBloc>().add(
-                                      UpdateProductBasketEvent(
-                                          productModel: state.products[index]
-                                              .copyWith(
-                                                  count: state.products[index]
-                                                          .count -
-                                                      1),
-                                          index: index,
-                                          remove: true),
-                                    );
+                                if (state.products[index].count != 1) {
+                                  context.read<BasketProductBloc>().add(
+                                        UpdateProductBasketEvent(
+                                            productModel: state.products[index]
+                                                .copyWith(
+                                                    count: state.products[index]
+                                                            .count -
+                                                        1),
+                                            index: index,
+                                            remove: true),
+                                      );
+                                }
                               },
                               iconData: Icons.remove),
                           Text(
@@ -102,15 +102,17 @@ class _BasketScreenState extends State<BasketScreen> {
                           ),
                           SetMyButton(
                               onTab: () {
-                                context.read<BasketProductBloc>().add(
-                                      UpdateProductBasketEvent(
-                                          productModel: state.products[index]
-                                              .copyWith(
-                                                  count: state.products[index]
-                                                          .count +
-                                                      1),
-                                          index: index),
-                                    );
+                                if (state.products[index].count < 10) {
+                                  context.read<BasketProductBloc>().add(
+                                        UpdateProductBasketEvent(
+                                            productModel: state.products[index]
+                                                .copyWith(
+                                                    count: state.products[index]
+                                                            .count +
+                                                        1),
+                                            index: index),
+                                      );
+                                }
                               },
                               iconData: Icons.add),
                         ],
