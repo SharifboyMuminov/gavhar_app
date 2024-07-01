@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gavhar_app/screens/category/widget/diaolog_buttons.dart';
+import 'package:gavhar_app/screens/widgets/diaolog_buttons.dart';
 import 'package:gavhar_app/utils/size_app.dart';
 import 'package:image_picker/image_picker.dart';
 
